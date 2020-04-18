@@ -1,5 +1,9 @@
-package adrian.spark;
+package zpi.aouu;
 
+import spark.Spark;
+import spark.utils.IOUtils;
+
+import java.io.IOException;
 import java.sql.*;
 
 import static spark.Spark.*;
@@ -7,7 +11,9 @@ import static spark.Spark.*;
 public class Main {
 
     public static void main(String[] args) {
+        port(getHerokuAssignedPort());
 
+        // Testing REST and DB
         get("/hello", (req, res) -> "Hello, world");
 
         get("/hello/:name", (req,res)->{
@@ -19,6 +25,9 @@ public class Main {
             //System.out.println(name);
             return name;
         });
+
+        get("/", (q, a) -> renderContent("/index.html"));
+
     }
 
     private static String getNameFromDB() {
@@ -34,5 +43,23 @@ public class Main {
             throwables.printStackTrace();
         }
         return name;
+    }
+
+    private static String renderContent(String htmlFile) {
+        String html = null;
+        try {
+            html = IOUtils.toString(Spark.class.getResourceAsStream(htmlFile));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return html;
+    }
+
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567; //return default port if heroku-port isn't set (i.e. on localhost)
     }
 }
