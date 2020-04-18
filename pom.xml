@@ -3,6 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <groupId>zpi.aouu</groupId>
     <artifactId>Sales</artifactId>
@@ -46,11 +49,11 @@
                 <version>3.0.2</version>
                 <configuration>
                     <jdkVersion>1.8</jdkVersion>
-                    <!-- Use your own application name -->
-                    <appName>sales</appName>
+                    <!-- Use your own application name (Heroku App name!) -->
+                    <appName>testowa-x</appName>
                     <processTypes>
                         <!-- Tell Heroku how to launch your application -->
-                        <web>java -jar target/sales.jar</web>
+                        <web>java -jar target/Sales-1.0-jar-with-dependencies.jar zpi.aouu.Main</web>
                     </processTypes>
                 </configuration>
             </plugin>
