@@ -12,27 +12,23 @@ public class Main {
 
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
+        staticFiles.location("/static");
 
         // Testing REST and DB
         get("/hello", (req, res) -> "Hello, world");
 
-        get("/hello/:name", (req,res)->{
-            return "Hello, "+ req.params(":name");
-        });
+        get("/hello/:name", (req,res)-> "Hello, " + req.params(":name"));
 
-        get("/name", (req, res) -> {
-            String name = getNameFromDB();
-            //System.out.println(name);
-            return name;
-        });
+        get("/name", (req, res) -> getNameFromDB());
 
-        get("/", (q, a) -> renderContent("/index.html"));
+        get("/", (q, a) -> renderContent("/static/index.html"));
 
     }
 
     private static String getNameFromDB() {
         String name = null;
-        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/test", "postgres", "postgres")) {
+        String db = "jdbc:postgresql://" + System.getenv("DB_HOST")+ ":" + System.getenv("DB_PORT") + "/" + System.getenv("DB_NAME"); // Using environment variables to hide sensitive data
+        try (Connection connection = DriverManager.getConnection(db, System.getenv("DB_USER"), System.getenv("DB_PASSWORD"))) {
             Statement statement = connection.createStatement();
             String query = "SELECT * FROM people WHERE imie = 'Jan'";
             ResultSet result = statement.executeQuery(query);

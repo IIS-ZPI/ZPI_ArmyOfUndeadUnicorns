@@ -53,7 +53,7 @@
                     <appName>testowa-x</appName>
                     <processTypes>
                         <!-- Tell Heroku how to launch your application -->
-                        <web>java -jar target/Sales-1.0-jar-with-dependencies.jar zpi.aouu.Main</web>
+                        <web>java -cp target/Sales-1.0-jar-with-dependencies.jar zpi.aouu.Main</web>
                     </processTypes>
                 </configuration>
             </plugin>
