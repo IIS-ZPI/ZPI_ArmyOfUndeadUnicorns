@@ -20,8 +20,10 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
-- task: PushToHeroku@0
+- task: PowerShell@2
   inputs:
-    ApiKey: '28c0ae10-1a0f-4f42-956a-f0f1fb36823f'
-    AppName: 'testowa-x'
-    PushRoot: '/'
+    targetType: 'inline'
+    script: |
+      git checkout $(Build.SourceBranchName)
+      git remote add heroku https://heroku:$(pat)@git.heroku.com/testowa-x.git
+      git push heroku $(Build.SourceBranchName)
