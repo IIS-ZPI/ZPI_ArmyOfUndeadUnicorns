@@ -1,8 +1,4 @@
 # Maven
-- task: PushToHeroku@0
-  inputs:
-    ApiKey: '28c0ae10-1a0f-4f42-956a-f0f1fb36823f'
-    AppName: 'testowa-x'
 # Build your Java project and run tests with Apache Maven.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
@@ -24,3 +20,8 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+- task: PushToHeroku@0
+  inputs:
+    ApiKey: '28c0ae10-1a0f-4f42-956a-f0f1fb36823f'
+    AppName: 'testowa-x'
+    PushRoot: '/'
