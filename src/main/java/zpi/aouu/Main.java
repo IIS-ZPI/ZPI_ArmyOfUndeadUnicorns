@@ -1,10 +1,16 @@
 package zpi.aouu;
 
+import com.google.gson.JsonArray;
 import spark.Spark;
 import spark.utils.IOUtils;
+import zpi.aouu.DatabaseConnection.DatabaseConnection;
+import zpi.aouu.JSONService.ResultSetToJsonMapper;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import static spark.Spark.*;
 
@@ -17,28 +23,33 @@ public class Main {
         // Testing REST and DB
         get("/hello", (req, res) -> "Hello, world");
 
-        get("/hello/:name", (req,res)-> "Hello, " + req.params(":name"));
+        get("/hello/:name", (req, res) -> "Hello, " + req.params(":name"));
 
-        get("/name", (req, res) -> getNameFromDB());
+        get("/products", (req, res) -> {
+            res.type("application/json");
+            JsonArray array = getProduct();
+            return array;
+        });
 
         get("/", (q, a) -> renderContent("/static/index.html"));
 
     }
 
-    private static String getNameFromDB() {
-        String name = null;
-        String db = "jdbc:postgresql://" + System.getenv("DB_HOST")+ ":" + System.getenv("DB_PORT") + "/" + System.getenv("DB_NAME"); // Using environment variables to hide sensitive data
-        try (Connection connection = DriverManager.getConnection(db, System.getenv("DB_USER"), System.getenv("DB_PASSWORD"))) {
+    private static JsonArray getProduct() {
+        JsonArray jsonArray = null;
+        try (Connection connection = DatabaseConnection.openConnection()) {
             Statement statement = connection.createStatement();
-            String query = "SELECT * FROM people WHERE imie = 'Jan'";
-            ResultSet result = statement.executeQuery(query);
-            if(result.next()) {
-                name = result.getString("imie") + " " + result.getString("nazwisko");
+            String query = "SELECT p.name,c.name as column_name , p.description, p.base_price  FROM products p join categories c on p.category_id = c.id;";
+            ResultSet resultSet = statement.executeQuery(query);
+            ResultSetToJsonMapper json = new ResultSetToJsonMapper();
+            jsonArray = new JsonArray();
+            while (resultSet.next()) {
+                jsonArray = json.mapResultSet(resultSet);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
-        return name;
+        return jsonArray;
     }
 
     private static String renderContent(String htmlFile) {
