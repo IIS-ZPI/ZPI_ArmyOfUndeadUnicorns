@@ -15,7 +15,7 @@ public class ResultSetToJsonMapper {
         JsonObject jsonObject;
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
-        while (rs.next()) {
+        do {
             jsonObject = new JsonObject();
             for (int index = 1; index <= columnCount; index++) {
                 String column = rs.getMetaData().getColumnLabel(index);
@@ -37,7 +37,7 @@ public class ResultSetToJsonMapper {
                 }
             }
             jArray.add(jsonObject);
-        }
+        } while (rs.next());
         return jArray;
     }
 }

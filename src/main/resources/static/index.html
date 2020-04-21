@@ -8,6 +8,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="script/script.js"></script>
+
 </head>
 <body>
     <div class="container-fluid">
@@ -15,8 +17,18 @@
             <h1 id="title">Niczego tu nie znajdę...</h1>
         <h3>Nic tu nie ma.</h3></div><br>
             <a href="/hello" class="btn-lg btn-success">Hello</a>
-            <a href="/products" class="btn-lg btn-primary">Get data from DB</a>
-        </p>
+    <div class="container">
+        <table class="table" id="table" data-height="460" >
+            <thead>
+            <tr>
+                <th>Name of Product</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Price (w/o VAT)</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
     </div>
 </body>
 </html>
