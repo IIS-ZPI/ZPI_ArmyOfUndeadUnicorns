@@ -20,10 +20,11 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      git checkout $(Build.SourceBranchName)
-      git remote add heroku https://heroku:$(pat)@git.heroku.com/testowa-x.git
-      git push heroku $(Build.SourceBranchName)
+- script: |
+    git remote add heroku https://heroku:$(pat)@git.heroku.com/testowa-x.git
+    git add .
+    git commit -m "temp commit for deployment"
+    git subtree split --prefix backend -b deploy
+    git checkout deploy
+    git push -f heroku master
+  displayName: 'Deploy to heroku'
