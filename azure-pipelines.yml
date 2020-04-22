@@ -26,4 +26,4 @@ steps:
     script: |
       git checkout $(Build.SourceBranchName)
       git remote add heroku https://heroku:$(pat)@git.heroku.com/testowa-x.git
-      git push --force heroku $(Build.SourceBranchName)
+      git push --force heroku master
