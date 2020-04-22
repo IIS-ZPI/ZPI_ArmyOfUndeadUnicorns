@@ -25,7 +25,7 @@ steps:
     targetType: 'inline'
     script: |
       # Write your PowerShell commands here.
-     
-      git checkout $(Build.SourceBranchName)
-      git remote add heroku https://heroku:$(pat)@git.heroku.com/testowa-x.git
-      git push heroku $(Build.SourceBranchName):master
+      HEROKU_API_KEY=$(pat) mvn heroku:deploy
+      #git checkout $(Build.SourceBranchName)
+      #git remote add heroku https://heroku:$(pat)@git.heroku.com/testowa-x.git
+      #git push heroku $(Build.SourceBranchName):master
