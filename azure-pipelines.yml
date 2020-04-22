@@ -24,7 +24,6 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      git config --global user.email "test@test.com"
-      git config --global user.name "Azure pipeline"
-      git remote add heroku https://heroku:$(pat)@git.heroku.com/testowa-x.git
-      git push heroku $(Build.SourceBranchName)
+      git checkout $(Build.SourceBranchName)
+      git remote add heroku https://heroku:$(pat)@git.heroku.com/test_app.git
+      git push --force heroku $(Build.SourceBranchName)
