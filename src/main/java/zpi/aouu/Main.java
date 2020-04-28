@@ -20,6 +20,7 @@ public class Main {
         port(getHerokuAssignedPort());
         staticFiles.location("/static");
 
+
         // Testing REST and DB
         get("/hello", (req, res) -> "Hello, world");
 
@@ -27,8 +28,7 @@ public class Main {
 
         get("/products", (req, res) -> {
             res.type("application/json");
-            JsonArray array = getProduct();
-            return array;
+            return getProduct();
         });
 
         get("/", (q, a) -> renderContent("/static/index.html"));
@@ -41,10 +41,9 @@ public class Main {
             Statement statement = connection.createStatement();
             String query = "SELECT p.name,c.name as column_name , p.description, p.base_price::money::numeric::float8  FROM products p join categories c on p.category_id = c.id;";
             ResultSet resultSet = statement.executeQuery(query);
-            ResultSetToJsonMapper json = new ResultSetToJsonMapper();
             jsonArray = new JsonArray();
             while (resultSet.next()) {
-                jsonArray = json.mapResultSet(resultSet);
+                jsonArray = ResultSetToJsonMapper.mapResultSet(resultSet);
             }
         } catch (SQLException throwable) {
             throwable.printStackTrace();
