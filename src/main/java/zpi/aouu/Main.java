@@ -19,16 +19,15 @@ public class Main {
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
         staticFiles.location("/static");
-
-
-        // Testing REST and DB
-        get("/hello", (req, res) -> "Hello, world");
-
-        get("/hello/:name", (req, res) -> "Hello, " + req.params(":name"));
-
         get("/products", (req, res) -> {
             res.type("application/json");
             return getProduct();
+        });
+
+        get("/availableStatesForProduct", "application/json", (req, res) -> {
+            String product = req.queryParams("product");
+            if (product == null) throw new IllegalArgumentException();
+            else return getAvailableStatesValueForProduct(product);
         });
 
         get("/", (q, a) -> renderContent("/static/index.html"));
@@ -50,6 +49,33 @@ public class Main {
         }
         return jsonArray;
     }
+
+
+    private static JsonArray getAvailableStatesValueForProduct(String productName) {
+        JsonArray jsonArray = null;
+        try (Connection connection = DatabaseConnection.openConnection()) {
+            Statement statement = connection.createStatement();
+            String query = "SELECT category_id from products where name = '" + productName + "'";
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet.next()) {
+                String categoryId = resultSet.getString("category_id");
+                if (categoryId == null) throw new IllegalArgumentException();
+                else {
+                    query = "SELECT s.name, cs.tax from categories_by_states cs join states s on s.id = cs.state_id where category_id = '" + categoryId + "' ";
+                    resultSet = statement.executeQuery(query);
+                    jsonArray = new JsonArray();
+                    while (resultSet.next()) {
+                        jsonArray = ResultSetToJsonMapper.mapResultSet(resultSet);
+                    }
+                }
+            } else throw new IllegalArgumentException();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return jsonArray;
+
+    }
+
 
     private static String renderContent(String htmlFile) {
         String html = null;
