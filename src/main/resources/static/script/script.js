@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     $.getJSON('/products', function (data) {
         var tbl_body = document.createElement("tbody");
