@@ -14,9 +14,11 @@ steps:
   inputs:
     SonarCloud: 'SonarCloud'
     organization: 'zpiarmyunicorns'
-    scannerMode: 'MSBuild'
-    projectKey: '$(SONAR_PROJECT_KEY)'
-    projectName: 'ZPI_ArmyOfUndeadUnicorns'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: '$(SONAR_PROJECT_KEY)'
+    cliProjectName: 'ZPI_ArmyOfUndeadUnicorns'
+    cliSources: '.'
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
