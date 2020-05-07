@@ -8,13 +8,13 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
+
 steps:
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud'
     organization: 'zpiarmyunicorns'
     scannerMode: 'Other'
-
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -30,7 +30,6 @@ steps:
     sonarQubeRunAnalysis: true
     sqMavenPluginVersionChoice: 'latest'
     goals: 'package'
-
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
