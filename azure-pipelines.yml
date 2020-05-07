@@ -8,29 +8,29 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
-
 steps:
 - task: SonarCloudPrepare@1
   inputs:
-    SonarCloud: 'SonarCloud'
+    SonarCloud: 'ZPI_ArmyOfUndeadUnicorns'
     organization: 'zpiarmyunicorns'
-    scannerMode: 'CLI'
-    configMode: 'manual'
-    cliProjectKey: '$(SONAR_PROJECT_KEY)'
-    cliProjectName: 'ZPI_ArmyOfUndeadUnicorns'
-    cliSources: '.'
+    scannerMode: 'Other'
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    mavenVersionOption: 'Default'
+    mavenOptions: '-Xmx3072m'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
     goals: 'package'
 
-- task: SonarCloudAnalyze@1
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
