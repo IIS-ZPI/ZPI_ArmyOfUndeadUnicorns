@@ -14,7 +14,6 @@ steps:
     SonarCloud: 'SonarCloud'
     organization: 'zpiarmyunicorns'
     scannerMode: 'Other'
-
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -23,6 +22,7 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
+    options: '-X'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: false
     effectivePomSkip: false
