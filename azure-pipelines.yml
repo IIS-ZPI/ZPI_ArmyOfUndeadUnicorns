@@ -14,7 +14,9 @@ steps:
   inputs:
     SonarCloud: 'SonarCloud'
     organization: 'zpiarmyunicorns'
-    scannerMode: 'Other'
+    scannerMode: 'MSBuild'
+    projectKey: '$(SONAR_PROJECT_KEY)'
+    projectName: 'ZPI_ArmyOfUndeadUnicorns'
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -26,6 +28,8 @@ steps:
     sonarQubeRunAnalysis: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+
+- task: SonarCloudAnalyze@1
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
