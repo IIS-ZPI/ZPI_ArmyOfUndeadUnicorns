@@ -1,6 +1,8 @@
 package zpi.aouu;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import spark.Spark;
 import spark.utils.IOUtils;
 import zpi.aouu.DatabaseConnection.DatabaseConnection;
@@ -30,6 +32,24 @@ public class Main {
             else return getAvailableStatesValueForProduct(product);
         });
 
+        get("/states", (req, res) -> {
+            res.type("application/json");
+            return new Gson().fromJson("[\n" +
+                    "{\n" +
+                    "   \"text\":\"Alabama\",\n" +
+                    "   \"value\":\"1\"\n" +
+                    "},\n" +
+                    "{\n" +
+                    "   \"text\":\"California\",\n" +
+                    "   \"value\":\"4\"\n" +
+                    "},\n" +
+                    " {\n" +
+                    "   \"text\":\"Arizona\",\n" +
+                    "  \"value\":\"3\"\n" +
+                    "}\n" +
+                    "]", JsonArray.class);
+        });
+
         get("/", (q, a) -> renderContent("/static/index.html"));
 
     }
@@ -38,7 +58,7 @@ public class Main {
         JsonArray jsonArray = null;
         try (Connection connection = DatabaseConnection.openConnection()) {
             Statement statement = connection.createStatement();
-            String query = "SELECT p.name,c.name as column_name , p.description, p.base_price::money::numeric::float8  FROM products p join categories c on p.category_id = c.id;";
+            String query = "SELECT p.name, c.name as column_name, p.description, p.base_price::money::numeric::float8  FROM products p join categories c on p.category_id = c.id;";
             ResultSet resultSet = statement.executeQuery(query);
             jsonArray = new JsonArray();
             while (resultSet.next()) {
