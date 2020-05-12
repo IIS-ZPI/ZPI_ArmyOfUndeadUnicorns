@@ -1,9 +1,8 @@
 package zpi.aouu.sales;
 
 import com.google.gson.JsonObject;
-import zpi.aouu.JSONService.Jsonable;
 
-public class ProductSaleData implements Jsonable {
+public class ProductSaleData {
     public final String PRODUCT_NAME;
     public final String PRODUCT_DESCRIPTION;
     public final String STATE_NAME;
@@ -28,11 +27,6 @@ public class ProductSaleData implements Jsonable {
         this.NO_TAX_PRICE = noTaxPrice;
         this.FINAL_PRICE = finalPrice;
         this.PROFIT = profit;
-    }
-
-    @Override
-    public JsonObject toJson() {
-        return null;    // TODO: Method to map object into JSON
     }
 
     @Override

@@ -16,6 +16,31 @@ $(document).ready(function () {
         });
         $("#table").append(tbl_body);   //DOM table doesn't have .appendChild
     });
+
+
+    $("#prices-form-send").click(function() {
+          console.log("Form send clicked");
+          /* get the action attribute from the <form action=""> element */
+          var $form = $("#prices-form"),
+              url = "/price/" +
+                  $("#selectedProduct").text() + "/" +
+                  $("#inputPreferredPrice").val() + "/" +
+                  $("#inputLogisticCost").val(),
+              states = ($("#selectStates").val());
+
+          $.each(states, function(i, item) {
+              states[i] = parseInt(item);
+          });
+
+          /* Send the data using post with element id name and name2*/
+          var posting = $.post(url, JSON.stringify(states));
+
+          /* Alerts the results */
+          posting.done(function( data ) {
+            alert('success');
+            console.log(data);
+          });
+    });
 });
 
 $(document).on('show.bs.modal', "#calculation-modal", function (event) {
@@ -23,6 +48,6 @@ $(document).on('show.bs.modal', "#calculation-modal", function (event) {
     var productName = button.data('product'); // Extract info from data-* attributes
     var productBasePrice = button.data('bprice');
     var modal = $(this);
-    modal.find('#selectedProduct').text("Product: " + productName);
+    modal.find('#selectedProduct').text(productName);
     modal.find('#inputBasePrice').val(productBasePrice);
 })

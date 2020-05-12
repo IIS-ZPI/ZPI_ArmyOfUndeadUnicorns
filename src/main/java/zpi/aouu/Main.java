@@ -7,6 +7,7 @@ import spark.Spark;
 import spark.utils.IOUtils;
 import zpi.aouu.DatabaseConnection.DatabaseConnection;
 import zpi.aouu.JSONService.ResultSetToJsonMapper;
+import zpi.aouu.webapp.Price;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -49,6 +50,8 @@ public class Main {
                     "}\n" +
                     "]", JsonArray.class);
         });
+
+        post("/price/:productName/:finalPrice/:logisticCost", "application/json", Price::calculate);
 
         get("/", (q, a) -> renderContent("/static/index.html"));
 

@@ -44,7 +44,7 @@
                         <h4 class="modal-title" id="selectedProduct"></h4>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal">
+                        <form id="prices-form" action="/" class="form-horizontal" method="post">
                             <div class="form-group">
                                 <label for="inputBasePrice" class="col-sm-4 control-label">Base price ($)</label>
                                 <div class="col-sm-6">
@@ -74,7 +74,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Calculate</button>
+                        <button id="prices-form-send" type="submit" class="btn btn-primary">Calculate</button>
                     </div>
                 </div>
             </div>
