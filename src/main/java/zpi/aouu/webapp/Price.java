@@ -3,11 +3,10 @@ package zpi.aouu.webapp;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import spark.Request;
 import spark.Response;
-import zpi.aouu.DatabaseConnection.DatabaseConnection;
-import zpi.aouu.JSONService.ResultSetToJsonMapper;
+import zpi.aouu.databaseconnection.DatabaseConnection;
+import zpi.aouu.jsonservice.ResultSetToJsonMapper;
 import zpi.aouu.sales.Sales;
 
 import java.sql.Connection;

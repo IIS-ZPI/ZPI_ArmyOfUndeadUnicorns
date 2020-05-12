@@ -2,11 +2,10 @@ package zpi.aouu;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import spark.Spark;
 import spark.utils.IOUtils;
-import zpi.aouu.DatabaseConnection.DatabaseConnection;
-import zpi.aouu.JSONService.ResultSetToJsonMapper;
+import zpi.aouu.databaseconnection.DatabaseConnection;
+import zpi.aouu.jsonservice.ResultSetToJsonMapper;
 import zpi.aouu.webapp.Price;
 
 import java.io.IOException;
@@ -59,16 +58,21 @@ public class Main {
 
     private static JsonArray getProduct() {
         JsonArray jsonArray = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
         try (Connection connection = DatabaseConnection.openConnection()) {
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             String query = "SELECT p.name, c.name as column_name, p.description, p.base_price::money::numeric::float8  FROM products p join categories c on p.category_id = c.id;";
-            ResultSet resultSet = statement.executeQuery(query);
+            resultSet = statement.executeQuery(query);
             jsonArray = new JsonArray();
             while (resultSet.next()) {
                 jsonArray = ResultSetToJsonMapper.mapResultSet(resultSet);
             }
+            statement.close();
+            resultSet.close();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
+
         }
         return jsonArray;
     }
@@ -92,6 +96,8 @@ public class Main {
                     }
                 }
             } else throw new IllegalArgumentException();
+            resultSet.close();
+            statement.close();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }

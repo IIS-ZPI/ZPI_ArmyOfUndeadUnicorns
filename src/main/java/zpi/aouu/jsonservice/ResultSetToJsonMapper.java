@@ -1,7 +1,6 @@
-package zpi.aouu.JSONService;
+package zpi.aouu.jsonservice;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 
 import java.sql.ResultSet;
@@ -10,7 +9,11 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class ResultSetToJsonMapper {
-    public static JsonArray mapResultSet(ResultSet rs) throws SQLException, JsonIOException {
+    private ResultSetToJsonMapper() {
+        throw new IllegalStateException("ResultSetToJsonMapper class");
+    }
+
+    public static JsonArray mapResultSet(ResultSet rs) throws SQLException {
         JsonArray jArray = new JsonArray();
         JsonObject jsonObject;
         ResultSetMetaData rsmd = rs.getMetaData();

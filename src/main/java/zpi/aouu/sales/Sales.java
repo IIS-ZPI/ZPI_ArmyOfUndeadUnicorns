@@ -3,7 +3,11 @@ package zpi.aouu.sales;
 import com.google.gson.JsonObject;
 
 public class Sales {
-    public static ProductSaleData getProductSaleData(String productName, String productDescription, String stateName, String category, double basePrice, double tax, double preferredFinalPrice, double logisticCost) {
+    private Sales() {
+        throw new IllegalStateException("Sales class");
+    }
+
+    public static ProductSaleData getProductSaleData(String productName, String productDescription, String stateName, String category, double tax, double basePrice, double preferredFinalPrice, double logisticCost) {
         double noTaxPrice = calculateProductNoTaxPrice(tax, preferredFinalPrice);
         return new ProductSaleData(
                 productName,
