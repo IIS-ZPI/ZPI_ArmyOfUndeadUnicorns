@@ -1,12 +1,12 @@
 package zpi.aouu;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import spark.Spark;
 import spark.utils.IOUtils;
-import zpi.aouu.databaseconnection.DatabaseConnection;
+import zpi.aouu.client.State;
+import zpi.aouu.database.DatabaseConnection;
 import zpi.aouu.jsonservice.ResultSetToJsonMapper;
-import zpi.aouu.webapp.Price;
+import zpi.aouu.client.Price;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -32,23 +32,7 @@ public class Main {
             else return getAvailableStatesValueForProduct(product);
         });
 
-        get("/states", (req, res) -> {
-            res.type("application/json");
-            return new Gson().fromJson("[\n" +
-                    "{\n" +
-                    "   \"text\":\"Alabama\",\n" +
-                    "   \"value\":\"1\"\n" +
-                    "},\n" +
-                    "{\n" +
-                    "   \"text\":\"California\",\n" +
-                    "   \"value\":\"4\"\n" +
-                    "},\n" +
-                    " {\n" +
-                    "   \"text\":\"Arizona\",\n" +
-                    "  \"value\":\"3\"\n" +
-                    "}\n" +
-                    "]", JsonArray.class);
-        });
+        get("/states", State::getStates);
 
         post("/price/:productName/:finalPrice/:logisticCost", "application/json", Price::calculate);
 

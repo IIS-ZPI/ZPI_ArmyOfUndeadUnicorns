@@ -7,7 +7,14 @@ public class Sales {
         throw new IllegalStateException("Sales class");
     }
 
-    public static ProductSaleData getProductSaleData(String productName, String productDescription, String stateName, String category, double tax, double basePrice, double preferredFinalPrice, double logisticCost) {
+    public static ProductSaleData getProductSaleData(String productName,
+                                                     String productDescription,
+                                                     String stateName,
+                                                     String category,
+                                                     double basePrice,
+                                                     double tax,
+                                                     double preferredFinalPrice,
+                                                     double logisticCost) {
         double noTaxPrice = calculateProductNoTaxPrice(tax, preferredFinalPrice);
         return new ProductSaleData(
                 productName,

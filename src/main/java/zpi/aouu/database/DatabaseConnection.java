@@ -1,4 +1,4 @@
-package zpi.aouu.databaseconnection;
+package zpi.aouu.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

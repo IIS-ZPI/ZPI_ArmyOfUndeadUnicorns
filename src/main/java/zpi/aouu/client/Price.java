@@ -1,18 +1,12 @@
-package zpi.aouu.webapp;
+package zpi.aouu.client;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import spark.Request;
 import spark.Response;
-import zpi.aouu.databaseconnection.DatabaseConnection;
-import zpi.aouu.jsonservice.ResultSetToJsonMapper;
+import zpi.aouu.database.DatabaseQuery;
 import zpi.aouu.sales.Sales;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Price {
     final static String QUERY_CALC_BASE = "SELECT\n" +
@@ -20,8 +14,8 @@ public class Price {
             "\tp.description AS \"productDescription\",\n" +
             "\ts.name AS \"stateName\",\n" +
             "\tc.name AS \"category\",\n" +
-            "\tcs.tax AS \"tax\",\n" +
-            "\tp.base_price::money::numeric::float8 AS \"basePrice\"\n" +
+            "\tp.base_price::money::numeric::float8 AS \"basePrice\",\n" +
+            "\tcs.tax AS \"tax\"\n" +
             "\tFROM products p \n" +
             "\tJOIN categories c ON p.category_id = c.id\n" +
             "\tJOIN categories_by_states cs ON cs.category_id = c.id\n" +
@@ -35,23 +29,11 @@ public class Price {
         JsonArray states;
         if(!req.body().isEmpty()) {
             states = new Gson().fromJson(req.body(), JsonArray.class);
-            System.out.println(states);
         } else {
             return null;
         }
 
-        JsonArray queryResultJson;
-        try(Connection connection = DatabaseConnection.openConnection()) {  // Get data from DB
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery(generateQuery(states, req.params("productName")));
-            queryResultJson = new JsonArray();
-            while (result.next()) {
-                queryResultJson = ResultSetToJsonMapper.mapResultSet(result);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
+        JsonArray queryResultJson = DatabaseQuery.query(generateQuery(states, req.params("productName")));
 
         JsonArray result = new JsonArray();
         Gson gson = new Gson();
