@@ -1,4 +1,9 @@
 $(document).ready(function () {
+    const formatter = new Intl.NumberFormat('en-US', {
+                       minimumFractionDigits: 2,
+                       maximumFractionDigits: 2,
+    });
+
     $.getJSON('/products', function (data) {
         var tbl_body = document.createElement("tbody");
         $.each(data, function (rowId, row) {
@@ -37,8 +42,24 @@ $(document).ready(function () {
 
           /* Alerts the results */
           posting.done(function( data ) {
-            alert('success');
-            console.log(data);
+                console.log(data);
+                $('#price-table-caption').html(data[0].productName + ' (' + data[0].category + ')');
+                $('#price-table-body').empty();
+                $.each(data, function(rowId, row) {
+                    var html_row = `<tr>
+                                        <td>${row.stateName}</td>
+                                        <td>$${formatter.format(row.basePrice)}</td>
+                                        <td>$${formatter.format(row.finalPrice)}</td>
+                                        <td>$${formatter.format(row.logisticCost)}</td>
+                                        <td>${formatter.format(row.tax * 100)}%</td>
+                                        <td>$${formatter.format(row.taxValue)}</td>
+                                        <td>$${formatter.format(row.noTaxPrice)}</td>
+                                        <td>$${formatter.format(row.profit)}</td>
+                                   </tr>`;
+                    $('#price-table-body').append(html_row);
+                    $("#price-table").css('visibility', 'visible');
+                });
+
           });
     });
 });

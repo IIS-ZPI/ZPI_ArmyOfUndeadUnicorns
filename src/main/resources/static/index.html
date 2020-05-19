@@ -26,6 +26,24 @@
                 </tr>
                 </thead>
             </table>
+            <table class="table" data-height="460" id="price-table">
+                <caption id="price-table-caption">Prices</caption>
+                <thead>
+                <tr>
+                    <th id="p-state">State</th>
+                    <th id="p-base-price">Price (net)</th>
+                    <th id="p-final-price">Final price</th>
+                    <th id="p-logistic-cost">Logistic cost</th>
+                    <th id="p-tax-percent">Tax</th>
+                    <th id="p-tax-value">Tax value</th>
+                    <th id="p-no-tax-price">No tax price</th>
+                    <th id="p-profit">Profit</th>
+                </tr>
+                </thead>
+                <tbody id="price-table-body">
+
+                </tbody>
+            </table>
         </div>
 
         <!-- Modal -->
@@ -69,7 +87,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="prices-form-send" type="submit" class="btn btn-primary">Calculate</button>
+                        <button id="prices-form-send" type="submit" data-dismiss="modal" class="btn btn-primary">Calculate</button>
                     </div>
                 </div>
             </div>

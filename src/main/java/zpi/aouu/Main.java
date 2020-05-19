@@ -38,6 +38,11 @@ public class Main {
 
         get("/", (q, a) -> renderContent("/static/index.html"));
 
+        get("/res", (req, res) -> {
+            System.out.println("test");
+            return req.body();
+        });
+
     }
 
     private static JsonArray getProduct() {
