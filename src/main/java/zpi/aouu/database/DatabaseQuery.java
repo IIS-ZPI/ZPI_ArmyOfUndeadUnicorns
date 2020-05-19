@@ -9,6 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseQuery {
+    private DatabaseQuery() {
+        throw new IllegalStateException("DatabaseQuery class");
+    }
+
     public static JsonArray query(String query) {
         JsonArray jsonArray = null;
         Statement statement;

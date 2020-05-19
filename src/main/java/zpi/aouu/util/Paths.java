@@ -9,7 +9,7 @@ public enum Paths {
 
 	public final String path;
 
-	private Paths(String path) {
+	Paths(String path) {
 		this.path = path;
 	}
 

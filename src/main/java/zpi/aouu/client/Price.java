@@ -9,7 +9,7 @@ import zpi.aouu.database.DatabaseQuery;
 import zpi.aouu.sales.Sales;
 
 public class Price {
-    final static String QUERY_CALC_BASE = "SELECT\n" +
+    static final String QUERY_CALC_BASE = "SELECT\n" +
             "\tp.name AS \"productName\",\n" +
             "\tp.description AS \"productDescription\",\n" +
             "\ts.name AS \"stateName\",\n" +
@@ -23,11 +23,15 @@ public class Price {
             "\tWHERE p.name = '%s' \n" +
             "\t\tAND cs.state_id IN (";    // Add needed state IDs to complete
 
+    private Price() {
+        throw new IllegalStateException("Price class");
+    }
+
     public static JsonArray calculate(Request req, Response res) {
         res.type("application/json");
 
         JsonArray states;
-        if(!req.body().isEmpty()) {
+        if (!req.body().isEmpty()) {
             states = new Gson().fromJson(req.body(), JsonArray.class);
         } else {
             return null;
@@ -44,8 +48,6 @@ public class Price {
                     Double.parseDouble(req.params("logisticCost"))
             )));
         }
-
-        //System.out.println(result.toString());
         return result;
     }
 

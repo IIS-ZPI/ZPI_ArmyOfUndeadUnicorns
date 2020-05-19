@@ -3,8 +3,8 @@ package zpi.aouu;
 import spark.Spark;
 import spark.utils.IOUtils;
 import zpi.aouu.client.Price;
-import zpi.aouu.client.State;
 import zpi.aouu.client.Product;
+import zpi.aouu.client.State;
 import zpi.aouu.util.Paths;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import static spark.Spark.*;
 
 public class Main {
-
+    private static final String contentType = "application/json";
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
         staticFiles.location("/static");
@@ -20,11 +20,11 @@ public class Main {
         get(Paths.START_PAGE.path, (q, a) -> renderContent("/static/index.html"));
 
         get(Paths.PRODUCTS.path, (req, res) -> {
-            res.type("application/json");
+            res.type(contentType);
             return Product.getProduct();
         });
 
-        get(Paths.STATES_FOR_PRODUCT.path, "application/json", (req, res) -> {
+        get(Paths.STATES_FOR_PRODUCT.path, contentType, (req, res) -> {
             String product = req.queryParams("product");
             if (product == null) throw new IllegalArgumentException();
             else return Product.getAvailableStates(product);
@@ -32,7 +32,7 @@ public class Main {
 
         get(Paths.STATES.path, State::getStates);
 
-        post(Paths.CALCULATE_PRICE.path, "application/json", Price::calculate);
+        post(Paths.CALCULATE_PRICE.path, contentType, Price::calculate);
 
 
     }

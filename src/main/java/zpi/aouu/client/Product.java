@@ -10,6 +10,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Product {
+	private Product() {
+		throw new IllegalStateException("Product class");
+	}
+
 	public static JsonArray getProduct() {
 		JsonArray jsonArray = null;
 		try (Connection connection = DatabaseConnection.openConnection()) {
