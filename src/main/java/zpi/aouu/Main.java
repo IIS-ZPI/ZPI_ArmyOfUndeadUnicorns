@@ -1,18 +1,13 @@
 package zpi.aouu;
 
-import com.google.gson.JsonArray;
 import spark.Spark;
 import spark.utils.IOUtils;
-import zpi.aouu.client.State;
-import zpi.aouu.database.DatabaseConnection;
-import zpi.aouu.jsonservice.ResultSetToJsonMapper;
 import zpi.aouu.client.Price;
+import zpi.aouu.client.State;
+import zpi.aouu.client.Product;
+import zpi.aouu.util.Paths;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import static spark.Spark.*;
 
@@ -21,79 +16,26 @@ public class Main {
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
         staticFiles.location("/static");
-        get("/products", (req, res) -> {
+
+        get(Paths.START_PAGE.path, (q, a) -> renderContent("/static/index.html"));
+
+        get(Paths.PRODUCTS.path, (req, res) -> {
             res.type("application/json");
-            return getProduct();
+            return Product.getProduct();
         });
 
-        get("/availableStatesForProduct", "application/json", (req, res) -> {
+        get(Paths.STATES_FOR_PRODUCT.path, "application/json", (req, res) -> {
             String product = req.queryParams("product");
             if (product == null) throw new IllegalArgumentException();
-            else return getAvailableStatesValueForProduct(product);
+            else return Product.getAvailableStates(product);
         });
 
-        get("/states", State::getStates);
+        get(Paths.STATES.path, State::getStates);
 
-        post("/price/:productName/:finalPrice/:logisticCost", "application/json", Price::calculate);
+        post(Paths.CALCULATE_PRICE.path, "application/json", Price::calculate);
 
-        get("/", (q, a) -> renderContent("/static/index.html"));
-
-        get("/res", (req, res) -> {
-            System.out.println("test");
-            return req.body();
-        });
 
     }
-
-    private static JsonArray getProduct() {
-        JsonArray jsonArray = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try (Connection connection = DatabaseConnection.openConnection()) {
-            statement = connection.createStatement();
-            String query = "SELECT p.name, c.name as column_name, p.description, p.base_price::money::numeric::float8  FROM products p join categories c on p.category_id = c.id;";
-            resultSet = statement.executeQuery(query);
-            jsonArray = new JsonArray();
-            while (resultSet.next()) {
-                jsonArray = ResultSetToJsonMapper.mapResultSet(resultSet);
-            }
-            statement.close();
-            resultSet.close();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-
-        }
-        return jsonArray;
-    }
-
-
-    private static JsonArray getAvailableStatesValueForProduct(String productName) {
-        JsonArray jsonArray = null;
-        try (Connection connection = DatabaseConnection.openConnection()) {
-            Statement statement = connection.createStatement();
-            String query = "SELECT category_id from products where name = '" + productName + "'";
-            ResultSet resultSet = statement.executeQuery(query);
-            if (resultSet.next()) {
-                String categoryId = resultSet.getString("category_id");
-                if (categoryId == null) throw new IllegalArgumentException();
-                else {
-                    query = "SELECT s.name, cs.tax from categories_by_states cs join states s on s.id = cs.state_id where category_id = '" + categoryId + "' ";
-                    resultSet = statement.executeQuery(query);
-                    jsonArray = new JsonArray();
-                    while (resultSet.next()) {
-                        jsonArray = ResultSetToJsonMapper.mapResultSet(resultSet);
-                    }
-                }
-            } else throw new IllegalArgumentException();
-            resultSet.close();
-            statement.close();
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-        }
-        return jsonArray;
-
-    }
-
 
     private static String renderContent(String htmlFile) {
         String html = null;
