@@ -15,6 +15,7 @@ public class Price {
             "\ts.name AS \"stateName\",\n" +
             "\tc.name AS \"category\",\n" +
             "\tp.base_price::money::numeric::float8 AS \"basePrice\",\n" +
+            "\tp.quantity AS \"quantity\",\n" +
             "\tcs.tax AS \"tax\"\n" +
             "\tFROM products p \n" +
             "\tJOIN categories c ON p.category_id = c.id\n" +
@@ -51,7 +52,7 @@ public class Price {
         return result;
     }
 
-    public static String generateQuery(JsonArray stateIDs, String productName) {
+    private static String generateQuery(JsonArray stateIDs, String productName) {
         StringBuilder query = new StringBuilder(String.format(QUERY_CALC_BASE, productName));
         for(JsonElement stateID : stateIDs) {
             query.append(stateID.getAsString());

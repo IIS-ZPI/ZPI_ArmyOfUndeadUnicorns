@@ -6,6 +6,7 @@ public class ProductSaleData {
     public final String stateName;
     public final String category;
     public final double basePrice;
+    public final int quantity;
     public final double tax;    // = (tax in $) / (price without tax)
     public final double taxValue;  // In $
     public final double logisticCost;
@@ -13,12 +14,13 @@ public class ProductSaleData {
     public final double finalPrice;
     public final double profit;
 
-    ProductSaleData(String product, String productDescription, String state, String category, double basePrice, double tax, double taxValue, double logisticCost, double noTaxPrice, double finalPrice, double profit) {
+    ProductSaleData(String product, String productDescription, String state, String category, double basePrice, int quantity, double tax, double taxValue, double logisticCost, double noTaxPrice, double finalPrice, double profit) {
         this.productName = product;
         this.productDescription = productDescription;
         this.stateName = state;
         this.category = category;
         this.basePrice = basePrice;
+        this.quantity = quantity;
         this.tax = tax;
         this.taxValue = taxValue;
         this.logisticCost = logisticCost;
@@ -36,6 +38,7 @@ public class ProductSaleData {
                 ", CATEGORY='" + category + '\'' +
                 ", BASE_PRICE=" + basePrice +
                 ", TAX=" + tax +
+                ", QUANTITY=" + quantity +
                 ", TAX_VALUE=" + taxValue +
                 ", LOGISTIC_COST=" + logisticCost +
                 ", NO_TAX_PRICE=" + noTaxPrice +
