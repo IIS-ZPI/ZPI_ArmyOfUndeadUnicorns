@@ -18,7 +18,7 @@ public class Product {
 		JsonArray jsonArray = null;
 		try (Connection connection = DatabaseConnection.openConnection()) {
 			Statement statement = connection.createStatement();
-			String query = "SELECT p.name, c.name as column_name, p.description, p.base_price::money::numeric::float8  FROM products p join categories c on p.category_id = c.id;";
+			String query = "SELECT p.name, c.name as column_name, p.description, p.base_price::money::numeric::float8, p.quantity  FROM products p join categories c on p.category_id = c.id;";
 			ResultSet resultSet = statement.executeQuery(query);
 			jsonArray = new JsonArray();
 			while (resultSet.next()) {
