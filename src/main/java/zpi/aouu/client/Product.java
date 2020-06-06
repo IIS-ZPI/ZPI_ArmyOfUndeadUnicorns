@@ -1,13 +1,19 @@
 package zpi.aouu.client;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import spark.Request;
+import spark.Response;
 import zpi.aouu.database.DatabaseConnection;
+import zpi.aouu.database.DatabaseQuery;
 import zpi.aouu.jsonservice.ResultSetToJsonMapper;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Locale;
 
 public class Product {
 	private Product() {
@@ -57,5 +63,26 @@ public class Product {
 			throwable.printStackTrace();
 		}
 		return jsonArray;
+	}
+
+	public static String updateProduct(Request req, Response res) {
+		JsonObject productUpdated;
+
+		if (!req.body().isEmpty()) {
+			productUpdated = new Gson().fromJson(req.body(), JsonObject.class);
+		} else {
+			res.status(400);
+			return null;
+		}
+
+		String query = String
+				.format(Locale.US,"UPDATE products SET description = '%s', base_price = %f, quantity = %d WHERE name = '%s';",
+						productUpdated.get("description").getAsString(),
+						productUpdated.get("base_price").getAsDouble(),
+						productUpdated.get("quantity").getAsInt(),
+						req.params("productId"));
+		DatabaseQuery.query(query);
+
+		return "ok";
 	}
 }

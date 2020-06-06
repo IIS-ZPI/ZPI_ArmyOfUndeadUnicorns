@@ -22,6 +22,7 @@ public class Main {
 
         post(Paths.CALCULATE_PRICE.path, contentType, Price::calculate);
 
+        put("/product/:productId", "application/json", Product::updateProduct);
 
     }
 

@@ -19,10 +19,12 @@ public class DatabaseQuery {
         ResultSet resultSet;
         try (Connection connection = DatabaseConnection.openConnection()) {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
-            jsonArray = resultSetToJsonArray(resultSet);
+            if(query.contains("SELECT")) {
+                resultSet = statement.executeQuery(query);
+                jsonArray = resultSetToJsonArray(resultSet);
+                resultSet.close();
+            }
             statement.close();
-            resultSet.close();
         } catch (SQLException throwable) {
             throwable.printStackTrace();
         }
