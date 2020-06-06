@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    var prevOpened = "";
 
     function dropdownButton(row) {
         return `<div class="btn-group">
@@ -71,26 +72,31 @@ $(document).ready(function () {
 
           });
     });
+
+    $(document).on('show.bs.modal', "#calculation-modal", function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var productName = button.data('product'); // Extract info from data-* attributes
+        var productBasePrice = button.data('bprice');
+        var modal = $(this);
+        modal.find('#selectedProduct').text(productName);
+        modal.find('#inputBasePrice').val(productBasePrice);
+        if(prevOpened!==productName) {
+            modal.find('#inputPreferredPrice').val("");
+            modal.find('#inputLogisticCost').val("");
+            prevOpened = productName;
+        }
+    })
+
+    $(document).on('show.bs.modal', "#updateModal", function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var productName = button.data('product'); // Extract info from data-* attributes
+        var productBasePrice = button.data('bprice');
+        var quantity = button.data('quantity');
+        var productDescription = button.data('description');
+        var modal = $(this);
+        modal.find('#updateModalSelectedProduct').text(productName);
+        modal.find('#updInputBasePrice').val(productBasePrice);
+        modal.find('#updInputDescription').val(productDescription);
+        modal.find('#updInputQuantity').val(quantity);
+    })
 });
-
-$(document).on('show.bs.modal', "#calculation-modal", function (event) {
-    var button = $(event.relatedTarget); // Button that triggered the modal
-    var productName = button.data('product'); // Extract info from data-* attributes
-    var productBasePrice = button.data('bprice');
-    var modal = $(this);
-    modal.find('#selectedProduct').text(productName);
-    modal.find('#inputBasePrice').val(productBasePrice);
-})
-
-$(document).on('show.bs.modal', "#updateModal", function (event) {
-    var button = $(event.relatedTarget); // Button that triggered the modal
-    var productName = button.data('product'); // Extract info from data-* attributes
-    var productBasePrice = button.data('bprice');
-    var quantity = button.data('quantity');
-    var productDescription = button.data('description');
-    var modal = $(this);
-    modal.find('#updateModalSelectedProduct').text(productName);
-    modal.find('#updInputBasePrice').val(productBasePrice);
-    modal.find('#updInputDescription').val(productDescription);
-    modal.find('#updInputQuantity').val(quantity);
-})
