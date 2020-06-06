@@ -15,93 +15,93 @@
 </head>
 <body>
 <div class="container-fluid">
-    <div class="container">
-        <table class="table" data-height="460" id="table">
-            <caption>Sales in USA</caption>
-            <thead>
-            <tr>
-                <th id="nameOfProduct">Name of Product</th>
-                <th id="category">Category</th>
-                <th id="description">Description</th>
-                <th id="price">Price (net)</th>
-            </tr>
-            </thead>
-        </table>
-        <table class="table" data-height="460" id="price-table">
-            <caption id="price-table-caption">Prices</caption>
-            <thead>
-            <tr>
-                <th id="p-state">State</th>
-                <th id="p-base-price">Price (net)</th>
-                <th id="p-final-price">Final price</th>
-                <th id="p-logistic-cost">Logistic cost</th>
-                <th id="p-tax-percent">Tax</th>
-                <th id="p-tax-value">Tax value</th>
-                <th id="p-no-tax-price">No tax price</th>
-                <th id="p-profit">Profit</th>
-            </tr>
-            </thead>
-            <tbody id="price-table-body">
 
-            </tbody>
-        </table>
-    </div>
+    <table class="table" data-height="460" id="table">
+        <caption>Sales in USA</caption>
+        <thead>
+        <tr>
+            <th id="nameOfProduct">Name of Product</th>
+            <th id="category">Category</th>
+            <th id="description">Description</th>
+            <th id="price">Price (net)</th>
+            <th id="calculation"></th>
+        </tr>
+        </thead>
+    </table>
+    <table class="table" data-height="460" id="price-table">
+        <caption id="price-table-caption">Prices</caption>
+        <thead>
+        <tr>
+            <th id="p-state">State</th>
+            <th id="p-base-price">Price (net)</th>
+            <th id="p-final-price">Final price</th>
+            <th id="p-logistic-cost">Logistic cost</th>
+            <th id="p-tax-percent">Tax</th>
+            <th id="p-tax-value">Tax value</th>
+            <th id="p-no-tax-price">No tax price</th>
+            <th id="p-profit">Profit</th>
+        </tr>
+        </thead>
+        <tbody id="price-table-body">
 
-    <!-- Modal -->
-    <div class="modal fade" id="calculation-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-         aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div>
-                        <h5 class="modal-title" id="calculation-modal-title">Calculate product price for state </h5>
-                        <h6 class="modal-title" id="selectedProduct"></h6>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="calculation-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="calculation-modal-title">Calculate product price for state </h5>
+                    <h6 class="modal-title" id="selectedProduct"></h6>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="prices-form" action="/" method="post">
+                    <div class="form-row form-row-spacing">
+                        <div class="col">
+                            <label for="inputBasePrice" class="control-label">Base price ($)</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputBasePrice" placeholder="0.0" disabled>
+                        </div>
                     </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="prices-form" action="/" method="post">
-                        <div class="form-row form-row-spacing">
-                            <div class="col">
-                                <label for="inputBasePrice" class="control-label">Base price ($)</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputBasePrice" placeholder="0.0" disabled>
-                            </div>
-                        </div>
-                        <div class="form-row form-row-spacing">
-                            <div class="col">
+                    <div class="form-row form-row-spacing">
+                        <div class="col">
                             <label for="selectStates" class="control-label">States</label>
-                            </div>
-                            <div class="col">
-                                <select id="selectStates" class="form-control tokenize-states" multiple></select>
-                            </div>
                         </div>
-                        <div class="form-row form-row-spacing">
-                            <div class="col">
+                        <div class="col">
+                            <select id="selectStates" class="form-control tokenize-states" multiple></select>
+                        </div>
+                    </div>
+                    <div class="form-row form-row-spacing">
+                        <div class="col">
                             <label for="inputPreferredPrice" class="control-label">Preferred price ($)</label>
-                            </div>
-                            <div class="col ">
-                                <input type="text" class="form-control" id="inputPreferredPrice" placeholder="$0.0">
-                            </div>
                         </div>
-                        <div class="form-row form-row-spacing">
-                            <div class="col">
+                        <div class="col ">
+                            <input type="text" class="form-control" id="inputPreferredPrice" placeholder="0.0">
+                        </div>
+                    </div>
+                    <div class="form-row form-row-spacing">
+                        <div class="col">
                             <label for="inputLogisticCost" class="control-label">Logistic cost ($)</label>
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" id="inputLogisticCost" placeholder="$0.0">
-                            </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id="prices-form-send" type="submit" data-dismiss="modal" class="btn btn-primary">Calculate
-                    </button>
-                </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="inputLogisticCost" placeholder="0.0">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="prices-form-send" type="submit" data-dismiss="modal" class="btn btn-primary">Calculate
+                </button>
             </div>
         </div>
     </div>

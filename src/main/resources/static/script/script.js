@@ -1,4 +1,18 @@
 $(document).ready(function () {
+
+    function dropdownButton(row) {
+        return `<div class="btn-group">
+                    <button type='button' class='btn btn-secondary' data-toggle='modal' data-target='#calculation-modal' data-product='${row.name}' data-bprice='${row.base_price}'>Prices</button>
+                    <button type='button' class='btn btn-secondary dropdown-toggle dropdown-toggle-split' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                        <span class='sr-only'>Toggle Dropdown</span>
+                    </button>
+                    <div class='dropdown-menu'>
+                        <a class='dropdown-item' href="#">Update</a>
+                        <a class='dropdown-item' href="#">Delete</a>
+                    </div>
+                </div>`;
+    }
+
     const formatter = new Intl.NumberFormat('en-US', {
                        minimumFractionDigits: 2,
                        maximumFractionDigits: 2,
@@ -13,11 +27,7 @@ $(document).ready(function () {
                 cell.appendChild(document.createTextNode(v.toString()));
             });
             var cell = tbl_row.insertCell();
-            cell.innerHTML = "<button class='btn btn-light' data-toggle='modal' data-target='#calculation-modal' data-product='" +
-            row.name +
-            "' data-bprice='" +
-            row.base_price +
-            "'>Prices</button>";
+            cell.innerHTML = dropdownButton(row);
         });
         $("#table").append(tbl_body);   //DOM table doesn't have .appendChild
     });
