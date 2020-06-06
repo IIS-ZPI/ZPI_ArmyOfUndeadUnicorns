@@ -67,16 +67,16 @@ public class Product {
 
 	public static String updateProduct(Request req, Response res) {
 		JsonObject productUpdated;
-
 		if (!req.body().isEmpty()) {
 			productUpdated = new Gson().fromJson(req.body(), JsonObject.class);
 		} else {
 			res.status(400);
-			return null;
+			return "not ok";
 		}
 
 		String query = String
-				.format(Locale.US,"UPDATE products SET description = '%s', base_price = %f, quantity = %d WHERE name = '%s';",
+				.format(Locale.US,
+						"UPDATE products SET description = '%s', base_price = %f, quantity = %d WHERE name = '%s';",
 						productUpdated.get("description").getAsString(),
 						productUpdated.get("base_price").getAsDouble(),
 						productUpdated.get("quantity").getAsInt(),

@@ -1,6 +1,25 @@
 $(document).ready(function () {
     var prevOpened = "";
 
+    (function ($) {
+        $.fn.serializeFormJSON = function () {
+
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+    })(jQuery);
+
     function dropdownButton(row) {
         return `<div class="btn-group">
                     <button type='button' class='btn btn-secondary' data-toggle='modal' data-target='#calculation-modal' data-product='${row.name}' data-bprice='${row.base_price}'>Prices</button>
@@ -15,11 +34,11 @@ $(document).ready(function () {
     }
 
     const formatter = new Intl.NumberFormat('en-US', {
-                       minimumFractionDigits: 2,
-                       maximumFractionDigits: 2,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
     });
 
-    $.getJSON('/products', function (data) {
+    function productsTable(data) {
         var tbl_body = document.createElement("tbody");
         $.each(data, function (rowId, row) {
             var tbl_row = tbl_body.insertRow();
@@ -31,32 +50,34 @@ $(document).ready(function () {
             cell.innerHTML = dropdownButton(row);
         });
         $("#table").append(tbl_body);   //DOM table doesn't have .appendChild
-    });
+    }
+
+    $.getJSON('/products', productsTable);
 
 
-    $("#prices-form-send").click(function() {
-          console.log("Form send clicked");
-          /* get the action attribute from the <form action=""> element */
+    $("#prices-form-send").click(function () {
+        console.log("Form send clicked");
+        /* get the action attribute from the <form action=""> element */
         const url = "/price/" +
             $("#selectedProduct").text() + "/" +
             $("#inputPreferredPrice").val() + "/" +
             $("#inputLogisticCost").val(),
             states = ($("#selectStates").val());
 
-        $.each(states, function(i, item) {
-              states[i] = parseInt(item);
-          });
+        $.each(states, function (i, item) {
+            states[i] = parseInt(item);
+        });
 
-          /* Send the data using post with element id name and name2*/
-          var posting = $.post(url, JSON.stringify(states));
+        /* Send the data using post with element id name and name2*/
+        var posting = $.post(url, JSON.stringify(states));
 
-          /* Alerts the results */
-          posting.done(function( data ) {
-                console.log(data);
-                $('#price-table-caption').html(data[0].productName + ' (' + data[0].category + ')');
-                $('#price-table-body').empty();
-                $.each(data, function(rowId, row) {
-                    var html_row = `<tr>
+        /* Alerts the results */
+        posting.done(function (data) {
+            console.log(data);
+            $('#price-table-caption').html(data[0].productName + ' (' + data[0].category + ')');
+            $('#price-table-body').empty();
+            $.each(data, function (rowId, row) {
+                var html_row = `<tr>
                                         <td>${row.stateName}</td>
                                         <td>$${formatter.format(row.basePrice)}</td>
                                         <td>$${formatter.format(row.finalPrice)}</td>
@@ -66,12 +87,30 @@ $(document).ready(function () {
                                         <td>$${formatter.format(row.noTaxPrice)}</td>
                                         <td>$${formatter.format(row.profit)}</td>
                                    </tr>`;
-                    $('#price-table-body').append(html_row);
-                    $("#price-table").css('visibility', 'visible');
-                });
+                $('#price-table-body').append(html_row);
+                $("#price-table").css('visibility', 'visible');
+            });
 
-          });
+        });
     });
+
+    $("#updateFormSend").click(function () {
+        const productName = $("#updateModalSelectedProduct").text()
+        const url = "/product/" + productName;
+        const obj = $("#updateProductForm").serializeFormJSON();
+
+        console.log(JSON.stringify(obj));
+
+        $.ajax({
+            url: url,
+            type: 'PUT',
+            data: JSON.stringify(obj),
+            contentType: "application/json",
+            success: function () {
+                location.reload();
+            }
+        });
+    })
 
     $(document).on('show.bs.modal', "#calculation-modal", function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
@@ -80,7 +119,7 @@ $(document).ready(function () {
         var modal = $(this);
         modal.find('#selectedProduct').text(productName);
         modal.find('#inputBasePrice').val(productBasePrice);
-        if(prevOpened!==productName) {
+        if (prevOpened !== productName) {
             modal.find('#inputPreferredPrice').val("");
             modal.find('#inputLogisticCost').val("");
             prevOpened = productName;

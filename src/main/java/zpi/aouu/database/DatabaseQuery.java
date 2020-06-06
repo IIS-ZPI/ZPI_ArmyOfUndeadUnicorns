@@ -23,6 +23,8 @@ public class DatabaseQuery {
                 resultSet = statement.executeQuery(query);
                 jsonArray = resultSetToJsonArray(resultSet);
                 resultSet.close();
+            } else {
+                statement.executeUpdate(query);
             }
             statement.close();
         } catch (SQLException throwable) {
