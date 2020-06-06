@@ -1,15 +1,24 @@
+a {
+    margin: 10px;
+}
+
+ul {
+    margin-bottom: 0 !important;
+}
+
+caption {
+    caption-side: top;
+}
+
+.form-row-spacing {
+    margin: 5px;
+}
+
+
 #title {
     color: grey;
 }
 
 #price-table {
     visibility: hidden;
-}
-
-a {
-    margin: 10px;
-}
-
-ul {
-    margin-bottom: 0px !important;
 }

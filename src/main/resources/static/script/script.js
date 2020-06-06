@@ -13,7 +13,7 @@ $(document).ready(function () {
                 cell.appendChild(document.createTextNode(v.toString()));
             });
             var cell = tbl_row.insertCell();
-            cell.innerHTML = "<button class='btn' data-toggle='modal' data-target='#calculation-modal' data-product='" +
+            cell.innerHTML = "<button class='btn btn-light' data-toggle='modal' data-target='#calculation-modal' data-product='" +
             row.name +
             "' data-bprice='" +
             row.base_price +
@@ -26,14 +26,13 @@ $(document).ready(function () {
     $("#prices-form-send").click(function() {
           console.log("Form send clicked");
           /* get the action attribute from the <form action=""> element */
-          var $form = $("#prices-form"),
-              url = "/price/" +
-                  $("#selectedProduct").text() + "/" +
-                  $("#inputPreferredPrice").val() + "/" +
-                  $("#inputLogisticCost").val(),
-              states = ($("#selectStates").val());
+        const url = "/price/" +
+            $("#selectedProduct").text() + "/" +
+            $("#inputPreferredPrice").val() + "/" +
+            $("#inputLogisticCost").val(),
+            states = ($("#selectStates").val());
 
-          $.each(states, function(i, item) {
+        $.each(states, function(i, item) {
               states[i] = parseInt(item);
           });
 

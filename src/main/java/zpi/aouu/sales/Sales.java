@@ -16,7 +16,7 @@ public class Sales {
                                                      double tax,
                                                      double preferredFinalPrice,
                                                      double logisticCost) {
-        preferredFinalPrice = quantityPriceModifier(preferredFinalPrice, quantity, 10, 99, 0.1, 0.95);
+        basePrice = quantityPriceModifier(basePrice, quantity, 10, 99, 0.1, 0.95);
         double noTaxPrice = calculateProductNoTaxPrice(tax, preferredFinalPrice);
         return new ProductSaleData(
                 productName,

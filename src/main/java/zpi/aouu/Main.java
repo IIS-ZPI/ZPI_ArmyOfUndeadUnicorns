@@ -1,13 +1,10 @@
 package zpi.aouu;
 
-import spark.Spark;
-import spark.utils.IOUtils;
 import zpi.aouu.client.Price;
 import zpi.aouu.client.Product;
 import zpi.aouu.client.State;
+import zpi.aouu.renderer.ContentRenderer;
 import zpi.aouu.util.Paths;
-
-import java.io.IOException;
 
 import static spark.Spark.*;
 
@@ -17,7 +14,9 @@ public class Main {
         port(getHerokuAssignedPort());
         staticFiles.location("/static");
 
-        get(Paths.START_PAGE.path, (q, a) -> renderContent("/static/index.html"));
+        /*get(Paths.START_PAGE.path, (q, a) -> {
+            return ContentRenderer.renderContent("/htmls/header.html", "/htmls/warehouse.html");
+        });*/
 
         get(Paths.PRODUCTS.path, (req, res) -> {
             res.type(contentType);
@@ -35,16 +34,6 @@ public class Main {
         post(Paths.CALCULATE_PRICE.path, contentType, Price::calculate);
 
 
-    }
-
-    private static String renderContent(String htmlFile) {
-        String html = null;
-        try {
-            html = IOUtils.toString(Spark.class.getResourceAsStream(htmlFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return html;
     }
 
     static int getHerokuAssignedPort() {
