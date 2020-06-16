@@ -1,26 +1,28 @@
 package zpi.aouu;
 
-import zpi.aouu.client.Price;
-import zpi.aouu.client.Product;
-import zpi.aouu.client.State;
+import zpi.aouu.client.*;
 import zpi.aouu.util.Paths;
 
 import static spark.Spark.*;
 
 public class Main {
-    private static final String contentType = "application/json";
     public static void main(String[] args) {
         port(getHerokuAssignedPort());
         staticFiles.location("/static");
 
         get(Paths.PRODUCTS.path, (req, res) -> {
-            res.type(contentType);
+            res.type("application/json");
             return Product.getProduct();
         });
 
         get(Paths.STATES.path, State::getStates);
 
-        post(Paths.CALCULATE_PRICE.path, contentType, Price::calculate);
+        get("/countries", Country::getCountries);
+
+        post("/priceabroad/:productName/:finalPrice/:logisticCost", "application/json", PriceAbroad::calculate);
+
+        post(Paths.CALCULATE_PRICE.path, "application/json", Price::calculate);
+
 
         put("/product/:productId", "application/json", Product::updateProduct);
 

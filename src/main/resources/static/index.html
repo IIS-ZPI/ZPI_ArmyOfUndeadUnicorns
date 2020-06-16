@@ -47,9 +47,30 @@
 
         </tbody>
     </table>
+
+    <table class="table" data-height="460" id="abroadPriceTable">
+        <caption id="abroadPriceTableCaption">Prices</caption>
+        <thead>
+        <tr>
+            <th id="ap-state">Country</th>
+            <th id="ap-base-price">Price (net)</th>
+            <th id="ap-final-price">Final price</th>
+            <th id="ap-logistic-cost">Logistic cost</th>
+            <th id="ap-transport-fee">Transport fee</th>
+            <th id="ap-import-tariff">Import fee</th>
+            <th id="ap-tax-percent">Tax</th>
+            <th id="ap-tax-value">Tax value</th>
+            <th id="ap-no-tax-price">No tax price</th>
+            <th id="ap-profit">Profit</th>
+        </tr>
+        </thead>
+        <tbody id="abroadPriceTableBody">
+
+        </tbody>
+    </table>
 </div>
 
-<!-- Modal -->
+<!-- States prices modal -->
 <div class="modal fade" id="calculation-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -106,10 +127,10 @@
             </div>
         </div>
     </div>
-    <script src="script/state_tokenization.js"></script>
+    <script src="script/input_tokenization.js"></script>
 </div>
 
-
+<!--Update modal-->
 <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -158,5 +179,66 @@
         </div>
     </div>
 </div>
+
+<!--Abroad prices modal-->
+<div class="modal fade" id="abroadCalculation" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title" id="abroadModalTitle">Calculate product price for state </h5>
+                    <h6 class="modal-title" id="abroadSelectedProduct"></h6>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="abroadPricesForm" action="/" method="post">
+                    <div class="form-row form-row-spacing">
+                        <div class="col">
+                            <label for="abroadInputBasePrice" class="control-label">Base price ($)</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="abroadInputBasePrice" placeholder="0.0" disabled>
+                        </div>
+                    </div>
+                    <div class="form-row form-row-spacing">
+                        <div class="col">
+                            <label for="selectCountries" class="control-label">Countries</label>
+                        </div>
+                        <div class="col">
+                            <select id="selectCountries" class="form-control tokenize-countries" multiple></select>
+                        </div>
+                    </div>
+                    <div class="form-row form-row-spacing">
+                        <div class="col">
+                            <label for="abroadInputPreferredPrice" class="control-label">Preferred price ($)</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="abroadInputPreferredPrice" placeholder="0.0">
+                        </div>
+                    </div>
+                    <div class="form-row form-row-spacing">
+                        <div class="col">
+                            <label for="abroadInputLogisticCost" class="control-label">Logistic cost ($)</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="abroadInputLogisticCost" placeholder="0.0">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="abroadPriceFormSend" type="submit" data-dismiss="modal" class="btn btn-primary">Calculate
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="script/input_tokenization.js"></script>
+</div>
+
 </body>
 </html>

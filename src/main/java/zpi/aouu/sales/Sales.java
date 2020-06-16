@@ -53,6 +53,31 @@ public class Sales {
         );
     }
 
+    public static ProductSaleAbroadData getProductSaleAbroadData(ProductBasic productData, CountryData countryData, double preferredFinalPrice, double logisticCost) {
+
+        /*int quantity;
+        if(productData.quantity.equals("\"\"")) {
+            quantity = -1;
+        } else {
+            quantity = Integer.parseInt(productData.quantity);
+        }
+        return new ProductSaleAbroadData(
+                productData.productName,
+                productData.productDescription,
+                countryData.name,
+                countryData.code,
+                productData.category,
+                productData.basePrice,
+                quantity,
+                countryData.importTariff,
+                calculateImportTariffValue(),
+                countryData.transportFee,
+                logisticCost,
+                calculateProductNoTaxPrice(productData)
+        );*/
+        return null;
+    }
+
     private static double calculateProfit(double noTaxPrice, double logisticCost, double basePrice) {
         return noTaxPrice - logisticCost - basePrice;
     }

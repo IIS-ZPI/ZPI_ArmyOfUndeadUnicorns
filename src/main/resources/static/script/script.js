@@ -27,6 +27,7 @@ $(document).ready(function () {
                         <span class='sr-only'>Toggle Dropdown</span>
                     </button>
                     <div class='dropdown-menu'>
+                        <a class='dropdown-item' type='button' data-toggle='modal' data-target='#abroadCalculation' data-product='${row.name}' data-bprice='${row.base_price}'>Prices abroad</a>
                         <a class='dropdown-item' type='button' data-toggle='modal' data-target='#updateModal' data-quantity='${row.quantity}' data-description='${row.description}' data-product='${row.name}' data-bprice='${row.base_price}'>Update</a>
                         <a class='dropdown-item' href="#">Delete</a>
                     </div>
@@ -112,6 +113,45 @@ $(document).ready(function () {
         });
     })
 
+    $("#abroadPriceFormSend").click(function () {
+        console.log("Form send clicked A");
+        /* get the action attribute from the <form action=""> element */
+        const url = "/priceabroad/" +
+            $("#abroadSelectedProduct").text() + "/" +
+            $("#abroadInputPreferredPrice").val() + "/" +
+            $("#abroadInputLogisticCost").val(),
+            countries = ($("#selectCountries").val());
+
+        $.each(countries, function (i, item) {
+            countries[i] = parseInt(item);
+        });
+
+        /* Send the data using post with element id name and name2*/
+        var posting = $.post(url, JSON.stringify(countries));
+
+        /* Alerts the results */
+        posting.done(function (data) {
+            console.log(data);
+            /*$('#price-table-caption').html(data[0].productName + ' (' + data[0].category + ')');
+            $('#price-table-body').empty();
+            $.each(data, function (rowId, row) {
+                var html_row = `<tr>
+                                        <td>${row.stateName}</td>
+                                        <td>$${formatter.format(row.basePrice)}</td>
+                                        <td>$${formatter.format(row.finalPrice)}</td>
+                                        <td>$${formatter.format(row.logisticCost)}</td>
+                                        <td>${formatter.format(row.tax * 100)}%</td>
+                                        <td>$${formatter.format(row.taxValue)}</td>
+                                        <td>$${formatter.format(row.noTaxPrice)}</td>
+                                        <td>$${formatter.format(row.profit)}</td>
+                                   </tr>`;
+                $('#price-table-body').append(html_row);
+                $("#price-table").css('visibility', 'visible');
+            });*/
+
+        });
+    });
+
     $(document).on('show.bs.modal', "#calculation-modal", function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var productName = button.data('product'); // Extract info from data-* attributes
@@ -122,6 +162,20 @@ $(document).ready(function () {
         if (prevOpened !== productName) {
             modal.find('#inputPreferredPrice').val("");
             modal.find('#inputLogisticCost').val("");
+            prevOpened = productName;
+        }
+    })
+
+    $(document).on('show.bs.modal', "#abroadCalculation", function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var productName = button.data('product'); // Extract info from data-* attributes
+        var productBasePrice = button.data('bprice');
+        var modal = $(this);
+        modal.find('#abroadSelectedProduct').text(productName);
+        modal.find('#abroadInputBasePrice').val(productBasePrice);
+        if (prevOpened !== productName) {
+            modal.find('#abroadInputPreferredPrice').val("");
+            modal.find('#abroadInputLogisticCost').val("");
             prevOpened = productName;
         }
     })

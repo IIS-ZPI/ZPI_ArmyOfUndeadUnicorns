@@ -26,3 +26,7 @@ caption {
 #price-table {
     visibility: hidden;
 }
+
+#abroadPriceTable {
+    visibility: hidden;
+}
