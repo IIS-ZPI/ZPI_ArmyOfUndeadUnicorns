@@ -132,22 +132,23 @@ $(document).ready(function () {
         /* Alerts the results */
         posting.done(function (data) {
             console.log(data);
-            /*$('#price-table-caption').html(data[0].productName + ' (' + data[0].category + ')');
-            $('#price-table-body').empty();
+            $('#abroadPriceTableCaption').html(data[0].product + ' (' + data[0].category + ')');
+            $('#abroadPriceTableBody').empty();
             $.each(data, function (rowId, row) {
                 var html_row = `<tr>
-                                        <td>${row.stateName}</td>
-                                        <td>$${formatter.format(row.basePrice)}</td>
-                                        <td>$${formatter.format(row.finalPrice)}</td>
-                                        <td>$${formatter.format(row.logisticCost)}</td>
-                                        <td>${formatter.format(row.tax * 100)}%</td>
-                                        <td>$${formatter.format(row.taxValue)}</td>
-                                        <td>$${formatter.format(row.noTaxPrice)}</td>
-                                        <td>$${formatter.format(row.profit)}</td>
+                                        <td>${row.country}</td>
+                                        <td>${row.currencyCode}${formatter.format(row.basePrice)}</td>
+                                        <td>${row.currencyCode}${formatter.format(row.finalPrice)}</td>
+                                        <td>${row.currencyCode}${formatter.format(row.logisticCost)}</td>
+                                        <td>${row.currencyCode}${formatter.format(row.transportFee)}</td>
+                                        <td>${formatter.format(row.importTariff * 100)}%</td>
+                                        <td>${row.currencyCode}${formatter.format(row.importTariffValue)}</td>
+                                        <td>${row.currencyCode}${formatter.format(row.noTaxPrice)}</td>
+                                        <td>${row.currencyCode}${formatter.format(row.profit)}</td>
                                    </tr>`;
-                $('#price-table-body').append(html_row);
-                $("#price-table").css('visibility', 'visible');
-            });*/
+                $('#abroadPriceTableBody').append(html_row);
+                $("#abroadPriceTable").css('visibility', 'visible');
+            });
 
         });
     });
