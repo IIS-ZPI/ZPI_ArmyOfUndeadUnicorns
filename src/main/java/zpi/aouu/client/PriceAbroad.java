@@ -1,14 +1,13 @@
 package zpi.aouu.client;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import spark.Request;
 import spark.Response;
 import zpi.aouu.database.DatabaseQuery;
+import zpi.aouu.sales.CountryData;
 import zpi.aouu.sales.ProductBasic;
 import zpi.aouu.sales.ProductSaleAbroadData;
-import zpi.aouu.sales.Sales;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -26,16 +25,16 @@ public class PriceAbroad {
             "JOIN categories c ON p.category_id = c.id\n" +
             "WHERE p.name = '%s';";
 
+    private static final String QUERY_COUNTRY = "SELECT name as \"name\", code as \"code\", currency as \"currency\"," +
+            " transport_fee as \"transportFee\", import_tariff_other as \"importTariff\" from countries WHERE id IN (";
+
     public static String calculate(Request req, Response res) {
         res.type("application/json");
         if (req.body().isEmpty()) {
             return null;
         }
 
-        List<String> countries = getSelectedCountries(req);
-        for(String country : countries) {
-            System.out.println(country);
-        }
+        List<CountryData> countries = getSelectedCountries(req);
 
         ProductBasic product = new Gson().fromJson(
                     DatabaseQuery.query(String.format(QUERY_PRODUCT, req.params("productName"))).get(0),
@@ -44,18 +43,18 @@ public class PriceAbroad {
         System.out.println("Logisitc cost: <" + req.params("logisticCost") + ">");
 
         List<ProductSaleAbroadData> result = new ArrayList<>();
-        for(String country : countries) {
+        for(CountryData country : countries) {
             result.add(new ProductSaleAbroadData(
                     req.params("productName"),
                     product.productDescription,
-                    country,
-                    "[Currency]",
-                    "[Category]",
+                    country.name,
+                    country.currency,
+                    product.category,
                     product.basePrice,
                     Integer.parseInt(product.quantity),
-                    -1,
-                    -1,
-                    -1,
+                    country.importTariff,
+                    country.importTariff * product.basePrice,
+                    country.transportFee,
                     Double.parseDouble(req.params("logisticCost")),
                     -1,
                     -1,
@@ -68,10 +67,23 @@ public class PriceAbroad {
         return new Gson().toJson(result);
     }
 
-    private static List<String> getSelectedCountries(Request req) {
-        List<String> countries;
+    private static List<CountryData> getSelectedCountries(Request req) {
+        List<String> countriesId;
         Type listType = new TypeToken<ArrayList<String>>(){}.getType();
-        countries = new Gson().fromJson(req.body(), listType);
-        return countries;
+        countriesId = new Gson().fromJson(req.body(), listType);
+
+        StringBuilder rangeBuilder = new StringBuilder();
+        String prefix = "";
+        for(String country : countriesId) {
+            rangeBuilder.append(prefix);
+            prefix = ",";
+            rangeBuilder.append(country);
+        }
+        rangeBuilder.append(");");
+        String range = rangeBuilder.toString();
+
+        Type listCountryType = new TypeToken<ArrayList<CountryData>>(){}.getType();
+
+        return new Gson().fromJson(DatabaseQuery.query(QUERY_COUNTRY + range), listCountryType);
     }
 }
