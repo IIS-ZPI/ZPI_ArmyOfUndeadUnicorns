@@ -8,6 +8,7 @@ import zpi.aouu.database.DatabaseQuery;
 import zpi.aouu.sales.CountryData;
 import zpi.aouu.sales.ProductBasic;
 import zpi.aouu.sales.ProductSaleAbroadData;
+import zpi.aouu.sales.Sales;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -44,23 +45,31 @@ public class PriceAbroad {
 
         List<ProductSaleAbroadData> result = new ArrayList<>();
         for(CountryData country : countries) {
+            int quantity = Integer.parseInt(product.quantity);
+            double basePrice = Sales.quantityPriceModifier(product.basePrice, quantity, 10, 99, 0.1, 0.95);
+            double finalPrice = Double.parseDouble(req.params("finalPrice"));
+            double logisticCost = Double.parseDouble(req.params("logisticCost"));
+            double noTaxPrice = Sales.calculateProductNoTaxPrice(country.importTariff, finalPrice);
             result.add(new ProductSaleAbroadData(
                     req.params("productName"),
                     product.productDescription,
                     country.name,
                     country.currency,
                     product.category,
-                    product.basePrice,
-                    Integer.parseInt(product.quantity),
+                    basePrice,
+                    quantity,
                     country.importTariff,
-                    country.importTariff * product.basePrice,
+                    country.importTariff * basePrice,
                     country.transportFee,
-                    Double.parseDouble(req.params("logisticCost")),
-                    -1,
-                    -1,
-                    -1
+                    logisticCost,
+                    noTaxPrice,
+                    finalPrice,
+                    Sales.calculateProfit(
+                            noTaxPrice,
+                            logisticCost + country.transportFee,
+                            basePrice)
             ));
-        };
+        }
 
         System.out.println(product);
 

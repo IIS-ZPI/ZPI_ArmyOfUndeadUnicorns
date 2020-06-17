@@ -137,14 +137,14 @@ $(document).ready(function () {
             $.each(data, function (rowId, row) {
                 var html_row = `<tr>
                                         <td>${row.country}</td>
-                                        <td>${row.currencyCode}${formatter.format(row.basePrice)}</td>
-                                        <td>${row.currencyCode}${formatter.format(row.finalPrice)}</td>
-                                        <td>${row.currencyCode}${formatter.format(row.logisticCost)}</td>
-                                        <td>${row.currencyCode}${formatter.format(row.transportFee)}</td>
+                                        <td>${row.currencyCode} ${formatter.format(row.basePrice)}</td>
+                                        <td>${row.currencyCode} ${formatter.format(row.finalPrice)}</td>
+                                        <td>${row.currencyCode} ${formatter.format(row.logisticCost)}</td>
+                                        <td>${row.currencyCode} ${formatter.format(row.transportFee)}</td>
                                         <td>${formatter.format(row.importTariff * 100)}%</td>
-                                        <td>${row.currencyCode}${formatter.format(row.importTariffValue)}</td>
-                                        <td>${row.currencyCode}${formatter.format(row.noTaxPrice)}</td>
-                                        <td>${row.currencyCode}${formatter.format(row.profit)}</td>
+                                        <td>${row.currencyCode} ${formatter.format(row.importTariffValue)}</td>
+                                        <td>${row.currencyCode} ${formatter.format(row.noTaxPrice)}</td>
+                                        <td>${row.currencyCode} ${formatter.format(row.profit)}</td>
                                    </tr>`;
                 $('#abroadPriceTableBody').append(html_row);
                 $("#abroadPriceTable").css('visibility', 'visible');

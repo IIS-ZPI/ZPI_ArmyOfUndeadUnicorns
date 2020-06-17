@@ -53,9 +53,9 @@ public class Sales {
         );
     }
 
-    public static ProductSaleAbroadData getProductSaleAbroadData(ProductBasic productData, CountryData countryData, double preferredFinalPrice, double logisticCost) {
+    /*public static ProductSaleAbroadData getProductSaleAbroadData(ProductBasic productData, CountryData countryData, double preferredFinalPrice, double logisticCost) {
 
-        /*int quantity;
+        int quantity;
         if(productData.quantity.equals("\"\"")) {
             quantity = -1;
         } else {
@@ -74,19 +74,19 @@ public class Sales {
                 countryData.transportFee,
                 logisticCost,
                 calculateProductNoTaxPrice(productData)
-        );*/
+        );
         return null;
-    }
+    }*/
 
-    private static double calculateProfit(double noTaxPrice, double logisticCost, double basePrice) {
+    public static double calculateProfit(double noTaxPrice, double logisticCost, double basePrice) {
         return noTaxPrice - logisticCost - basePrice;
     }
 
-    private static double calculateProductTaxValue(double taxPrice, double noTaxPrice) {
+    public static double calculateProductTaxValue(double taxPrice, double noTaxPrice) {
         return taxPrice - noTaxPrice;
     }
 
-    private static double calculateProductNoTaxPrice(double tax, double taxPrice) {
+    public static double calculateProductNoTaxPrice(double tax, double taxPrice) {
         return taxPrice / (1 + tax);
     }
 
