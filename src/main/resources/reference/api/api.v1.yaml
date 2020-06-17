@@ -1,0 +1,264 @@
+openapi: 3.0.0
+info:
+  title: api
+  version: '1.0'
+  contact:
+    name: '215777'
+    url: testowa-x.herokuapp.com
+    email: 215777@edu.p.lodz.pl
+servers:
+  - url: 'https://testowa-x.herokuapp.com/'
+paths:
+  'product/{productId}':
+    parameters:
+      - schema:
+          type: integer
+        name: productId
+        in: path
+        required: true
+    put:
+      summary: update Product
+      operationId: put-product-productId
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+              examples: {}
+        '400':
+          description: Bad Request
+          headers: {}
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      description: Update Product
+      tags:
+        - product
+  'price/{productName}/{finalPrice}/{logisticCost}':
+    parameters:
+      - schema:
+          type: string
+        name: productName
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: finalPrice
+        in: path
+        required: true
+      - schema:
+          type: integer
+        name: logisticCost
+        in: path
+        required: true
+    post:
+      summary: post PriceList
+      operationId: postprice-productName-finalPrice-logisticCost
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      description: get price for product
+      tags:
+        - price
+  states:
+    get:
+      summary: get States
+      tags:
+        - state
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/State'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-states
+      description: get states
+    parameters: []
+  products:
+    get:
+      summary: get Products
+      tags:
+        - product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-products
+      description: get all products
+    parameters: []
+  countries:
+    get:
+      summary: get Countries
+      tags:
+        - country
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Country'
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+            multipart/form-data:
+              schema:
+                type: object
+                properties: {}
+            text/html:
+              schema:
+                type: object
+                properties: {}
+            text/plain:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-countries
+      description: get Countries
+    parameters: []
+  '/priceabroad/{productName}/{finalPrice}/{logisticCost}':
+    parameters:
+      - schema:
+          type: string
+        name: productName
+        in: path
+        required: true
+      - schema:
+          type: number
+        name: finalPrice
+        in: path
+        required: true
+      - schema:
+          type: number
+        name: logisticCost
+        in: path
+        required: true
+        description: ''
+    post:
+      summary: ''
+      operationId: post-priceabroad-productName-finalPrice-logisticCost
+      responses:
+        '200':
+          description: OK
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      parameters: []
+      description: abroad cost for product
+      tags:
+        - price
+components:
+  schemas:
+    Product:
+      title: Product model
+      type: object
+      description: Product model
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        base_price:
+          type: number
+          format: float
+        description:
+          type: string
+        category_id:
+          type: integer
+        quantity:
+          type: string
+      x-tags:
+        - product
+    State:
+      title: State model
+      type: object
+      description: |
+        state model
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+      required:
+        - id
+        - name
+      x-tags:
+        - state
+    Category:
+      title: Category model
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        description:
+          type: string
+      description: Category model
+    Country:
+      title: Country
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        code:
+          type: string
+        currency:
+          type: string
+        transport_fee:
+          type: string
+        import_tariff_consumables:
+          type: string
+        import_tariff_other:
+          type: string
+      description: Country model
+      x-tags:
+        - country
+  securitySchemes: {}
