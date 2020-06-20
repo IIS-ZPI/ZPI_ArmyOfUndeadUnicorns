@@ -48,8 +48,8 @@ public class PriceAbroad {
         for(CountryData country : countries) {
             int quantity = Integer.parseInt(product.quantity);
             double basePrice = Sales.quantityPriceModifier(product.basePrice * exchangeRatio.getCountryDataAndExchangeList().get(country), quantity, 10, 99, 0.1, 0.95);
-            double finalPrice = Double.parseDouble(req.params("finalPrice"));
-            double logisticCost = Double.parseDouble(req.params("logisticCost"));
+            double finalPrice = Double.parseDouble(req.params("finalPrice")) * exchangeRatio.getCountryDataAndExchangeList().get(country);
+            double logisticCost = Double.parseDouble(req.params("logisticCost")) * exchangeRatio.getCountryDataAndExchangeList().get(country);
             double noTaxPrice = Sales.calculateProductNoTaxPrice(country.importTariff, finalPrice);
             result.add(new ProductSaleAbroadData(
                     req.params("productName"),
