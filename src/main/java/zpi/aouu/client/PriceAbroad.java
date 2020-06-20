@@ -60,7 +60,7 @@ public class PriceAbroad {
                     basePrice,
                     quantity,
                     country.importTariff,
-                    country.importTariff * basePrice,
+                    country.importTariff * basePrice * exchangeRatio.getCountryDataAndExchangeList().get(country),
                     country.transportFee,
                     logisticCost,
                     noTaxPrice,
