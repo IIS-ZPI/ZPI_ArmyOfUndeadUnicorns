@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import spark.Request;
 import spark.Response;
+import zpi.aouu.apiFixerio.ExchangeRatio;
 import zpi.aouu.database.DatabaseQuery;
 import zpi.aouu.sales.CountryData;
 import zpi.aouu.sales.ProductBasic;
@@ -37,16 +38,16 @@ public class PriceAbroad {
 
         List<CountryData> countries = getSelectedCountries(req);
 
+        ExchangeRatio exchangeRatio = new ExchangeRatio(countries, "USD");
         ProductBasic product = new Gson().fromJson(
-                    DatabaseQuery.query(String.format(QUERY_PRODUCT, req.params("productName"))).get(0),
-                    ProductBasic.class);
-
+                DatabaseQuery.query(String.format(QUERY_PRODUCT, req.params("productName"))).get(0),
+                ProductBasic.class);
         System.out.println("Logisitc cost: <" + req.params("logisticCost") + ">");
 
         List<ProductSaleAbroadData> result = new ArrayList<>();
         for(CountryData country : countries) {
             int quantity = Integer.parseInt(product.quantity);
-            double basePrice = Sales.quantityPriceModifier(product.basePrice, quantity, 10, 99, 0.1, 0.95);
+            double basePrice = Sales.quantityPriceModifier(product.basePrice * exchangeRatio.getCountryDataAndExchangeList().get(country), quantity, 10, 99, 0.1, 0.95);
             double finalPrice = Double.parseDouble(req.params("finalPrice"));
             double logisticCost = Double.parseDouble(req.params("logisticCost"));
             double noTaxPrice = Sales.calculateProductNoTaxPrice(country.importTariff, finalPrice);
