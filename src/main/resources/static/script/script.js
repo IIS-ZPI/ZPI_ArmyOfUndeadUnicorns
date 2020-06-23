@@ -57,27 +57,30 @@ $(document).ready(function () {
 
 
     $("#prices-form-send").click(function () {
-        console.log("Form send clicked");
-        /* get the action attribute from the <form action=""> element */
-        const url = "/price/" +
-            $("#selectedProduct").text() + "/" +
-            $("#inputPreferredPrice").val();
-        let states = ($("#selectStates").val());
+        if($("#inputPreferredPrice").val() === "" || $("#selectCountries").val().length === 0) {
+            $("#errorMsgStates").css('visibility', 'visible');
+        } else {
+            $("#errorMsgStates").css('visibility', 'hidden');
+            $('.modal').modal('hide');
+            const url = "/price/" +
+                $("#selectedProduct").text() + "/" +
+                $("#inputPreferredPrice").val();
+            let states = ($("#selectStates").val());
 
-        $.each(states, function (i, item) {
-            states[i] = parseInt(item);
-        });
+            $.each(states, function (i, item) {
+                states[i] = parseInt(item);
+            });
 
-        /* Send the data using post with element id name and name2*/
-        var posting = $.post(url, JSON.stringify(states));
+            /* Send the data using post with element id name and name2*/
+            var posting = $.post(url, JSON.stringify(states));
 
-        /* Alerts the results */
-        posting.done(function (data) {
-            console.log(data);
-            $('#price-table-caption').html(data[0].productName + ' (' + data[0].category + ')');
-            $('#price-table-body').empty();
-            $.each(data, function (rowId, row) {
-                var html_row = `<tr>
+            /* Alerts the results */
+            posting.done(function (data) {
+                console.log(data);
+                $('#price-table-caption').html(data[0].productName + ' (' + data[0].category + ')');
+                $('#price-table-body').empty();
+                $.each(data, function (rowId, row) {
+                    var html_row = `<tr>
                                         <td>${row.stateName}</td>
                                         <td>$${formatter.format(row.basePrice)}</td>
                                         <td>$${formatter.format(row.finalPrice)}</td>
@@ -87,18 +90,19 @@ $(document).ready(function () {
                                         <td>$${formatter.format(row.noTaxPrice)}</td>
                                         <td>$${formatter.format(row.profit)}</td>
                                    </tr>`;
-                $('#price-table-body').append(html_row);
-                $("#price-table").css('visibility', 'visible');
-            });
+                    $('#price-table-body').append(html_row);
+                    $("#price-table").css('visibility', 'visible');
+                    $("#abroadPriceTable").css('visibility', 'hidden');
+                });
 
-        });
+            });
+        }
     });
 
     $("#updateFormSend").click(function () {
         const productName = $("#updateModalSelectedProduct").text()
         const url = "/product/" + productName;
         const obj = $("#updateProductForm").serializeFormJSON();
-
         console.log(JSON.stringify(obj));
 
         $.ajax({
@@ -113,27 +117,30 @@ $(document).ready(function () {
     })
 
     $("#abroadPriceFormSend").click(function () {
-        console.log("Form send clicked A");
-        /* get the action attribute from the <form action=""> element */
-        const url = "/priceabroad/" +
-            $("#abroadSelectedProduct").text() + "/" +
-            $("#abroadInputPreferredPrice").val();
-            countries = ($("#selectCountries").val());
+        if($("#abroadInputPreferredPrice").val() === "" || $("#selectCountries").val().length === 0) {
+            $("#errorMsgAbroad").css('visibility', 'visible');
+        } else {
+            $('.modal').modal('hide');
+            $("#errorMsgAbroad").css('visibility', 'hidden');
+            const url = "/priceabroad/" +
+                $("#abroadSelectedProduct").text() + "/" +
+                $("#abroadInputPreferredPrice").val();
+            let countries = ($("#selectCountries").val());
 
-        $.each(countries, function (i, item) {
-            countries[i] = parseInt(item);
-        });
+            $.each(countries, function (i, item) {
+                countries[i] = parseInt(item);
+            });
 
-        /* Send the data using post with element id name and name2*/
-        var posting = $.post(url, JSON.stringify(countries));
+            /* Send the data using post with element id name and name2*/
+            var posting = $.post(url, JSON.stringify(countries));
 
-        /* Alerts the results */
-        posting.done(function (data) {
-            console.log(data);
-            $('#abroadPriceTableCaption').html(data[0].product + ' (' + data[0].category + ')');
-            $('#abroadPriceTableBody').empty();
-            $.each(data, function (rowId, row) {
-                var html_row = `<tr>
+            /* Alerts the results */
+            posting.done(function (data) {
+                console.log(data);
+                $('#abroadPriceTableCaption').html(data[0].product + ' (' + data[0].category + ')');
+                $('#abroadPriceTableBody').empty();
+                $.each(data, function (rowId, row) {
+                    var html_row = `<tr>
                                         <td>${row.country}</td>
                                         <td>${row.currencyCode} ${formatter.format(row.basePrice)}</td>
                                         <td>${row.currencyCode} ${formatter.format(row.finalPrice)}</td>
@@ -143,11 +150,13 @@ $(document).ready(function () {
                                         <td>${row.currencyCode} ${formatter.format(row.noTaxPrice)}</td>
                                         <td>${row.currencyCode} ${formatter.format(row.profit)}</td>
                                  </tr>`;
-                $('#abroadPriceTableBody').append(html_row);
-                $("#abroadPriceTable").css('visibility', 'visible');
-            });
+                    $('#abroadPriceTableBody').append(html_row);
+                    $("#abroadPriceTable").css('visibility', 'visible');
+                    $("#price-table").css('visibility', 'hidden');
+                });
 
-        });
+            });
+        }
     });
 
     $(document).on('show.bs.modal', "#calculation-modal", function (event) {

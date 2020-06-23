@@ -59,7 +59,7 @@ public class PriceAbroad {
                     basePrice,
                     quantity,
                     country.importTariff,
-                    country.importTariff * basePrice,
+                    Sales.calculateProductTaxValue(finalPrice, noTaxPrice),
                     logisticCost,
                     noTaxPrice,
                     finalPrice,

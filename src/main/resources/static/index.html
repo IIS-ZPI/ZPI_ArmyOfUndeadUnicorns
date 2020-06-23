@@ -104,15 +104,20 @@
                         <div class="col">
                             <label for="inputPreferredPrice" class="control-label">Preferred price ($)</label>
                         </div>
-                        <div class="col ">
+                        <div class="col">
                             <input type="text" class="form-control" id="inputPreferredPrice" placeholder="0.0">
+                        </div>
+                    </div>
+                    <div class="form-row-spacing error-msg">
+                        <div id="errorMsgStates" class="alert alert-danger" role="alert">
+                            Not enough data provided! Try again.
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="prices-form-send" type="submit" data-dismiss="modal" class="btn btn-primary">Calculate
+                <button id="prices-form-send" type="submit" class="btn btn-primary">Calculate
                 </button>
             </div>
         </div>
@@ -164,7 +169,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="updateFormSend" type="submit" data-dismiss="modal" class="btn btn-primary">Update</button>
+                <button id="updateFormSend" type="submit" class="btn btn-primary">Update</button>
             </div>
         </div>
     </div>
@@ -210,11 +215,16 @@
                             <input type="text" class="form-control" id="abroadInputPreferredPrice" placeholder="0.0">
                         </div>
                     </div>
+                    <div class="form-row-spacing error-msg">
+                        <div id="errorMsgAbroad" class="alert alert-danger" role="alert">
+                            Not enough data provided! Try again.
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="abroadPriceFormSend" type="submit" data-dismiss="modal" class="btn btn-primary">Calculate
+                <button id="abroadPriceFormSend" type="submit" class="btn btn-primary">Calculate
                 </button>
             </div>
         </div>

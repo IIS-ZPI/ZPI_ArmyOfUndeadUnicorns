@@ -1,7 +1,9 @@
 $('.tokenize-states').tokenize2({
-    dataSource: '/states'
+    dataSource: '/states',
+    sortable: true
 });
 
 $('.tokenize-countries').tokenize2({
-    dataSource: '/countries'
+    dataSource: '/countries',
+    sortable: true
 });
