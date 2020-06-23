@@ -16,7 +16,8 @@ public class Price {
             "\tc.name AS \"category\",\n" +
             "\tp.base_price::money::numeric::float8 AS \"basePrice\",\n" +
             "\tp.quantity AS \"quantity\",\n" +
-            "\tcs.tax AS \"tax\"\n" +
+            "\tcs.tax AS \"tax\",\n" +
+            "\ts.transport_fee::money::numeric::float8 AS \"logisticCost\"\n" +
             "\tFROM products p \n" +
             "\tJOIN categories c ON p.category_id = c.id\n" +
             "\tJOIN categories_by_states cs ON cs.category_id = c.id\n" +
@@ -45,8 +46,7 @@ public class Price {
         for(JsonElement element : queryResultJson) {  // Do calculation and make JsonArray out of results
             result.add(gson.toJsonTree(Sales.getProductSaleData(
                     element.getAsJsonObject(),
-                    Double.parseDouble(req.params("finalPrice")),
-                    Double.parseDouble(req.params("logisticCost"))
+                    Double.parseDouble(req.params("finalPrice"))
             )));
         }
         return result;

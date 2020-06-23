@@ -42,14 +42,13 @@ public class PriceAbroad {
         ProductBasic product = new Gson().fromJson(
                 DatabaseQuery.query(String.format(QUERY_PRODUCT, req.params("productName"))).get(0),
                 ProductBasic.class);
-        System.out.println("Logisitc cost: <" + req.params("logisticCost") + ">");
 
         List<ProductSaleAbroadData> result = new ArrayList<>();
         for(CountryData country : countries) {
             int quantity = Integer.parseInt(product.quantity);
-            double basePrice = Sales.quantityPriceModifier(product.basePrice * exchangeRatio.getCountryDataAndExchangeList().get(country), quantity, 10, 99, 0.1, 0.95);
+            double basePrice = Sales.quantityPriceModifier(product.basePrice, quantity, 10, 99, 0.1, 0.95) * exchangeRatio.getCountryDataAndExchangeList().get(country);
             double finalPrice = Double.parseDouble(req.params("finalPrice")) * exchangeRatio.getCountryDataAndExchangeList().get(country);
-            double logisticCost = Double.parseDouble(req.params("logisticCost")) * exchangeRatio.getCountryDataAndExchangeList().get(country);
+            double logisticCost = country.transportFee * exchangeRatio.getCountryDataAndExchangeList().get(country);
             double noTaxPrice = Sales.calculateProductNoTaxPrice(country.importTariff, finalPrice);
             result.add(new ProductSaleAbroadData(
                     req.params("productName"),
@@ -60,14 +59,13 @@ public class PriceAbroad {
                     basePrice,
                     quantity,
                     country.importTariff,
-                    country.importTariff * basePrice * exchangeRatio.getCountryDataAndExchangeList().get(country),
-                    country.transportFee,
+                    country.importTariff * basePrice,
                     logisticCost,
                     noTaxPrice,
                     finalPrice,
                     Sales.calculateProfit(
                             noTaxPrice,
-                            logisticCost + country.transportFee,
+                            logisticCost,
                             basePrice)
             ));
         }

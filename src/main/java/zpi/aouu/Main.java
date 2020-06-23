@@ -19,7 +19,7 @@ public class Main {
 
         get("/countries", Country::getCountries);
 
-        post("/priceabroad/:productName/:finalPrice/:logisticCost", "application/json", PriceAbroad::calculate);
+        post("/priceabroad/:productName/:finalPrice", "application/json", PriceAbroad::calculate);
 
         post(Paths.CALCULATE_PRICE.path, "application/json", Price::calculate);
 

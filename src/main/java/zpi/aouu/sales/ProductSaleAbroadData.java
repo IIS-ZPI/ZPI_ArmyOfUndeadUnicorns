@@ -11,7 +11,6 @@ public class ProductSaleAbroadData {
     double importTariff;
     double importTariffValue;
     double transportFee;
-    double logisticCost;
     double noTaxPrice;
     double finalPrice;
     double profit;
@@ -26,7 +25,6 @@ public class ProductSaleAbroadData {
                                  double importTariff,
                                  double importTariffValue,
                                  double transportFee,
-                                 double logisticCost,
                                  double noTaxPrice,
                                  double finalPrice,
                                  double profit) {
@@ -40,7 +38,6 @@ public class ProductSaleAbroadData {
         this.importTariff = importTariff;
         this.importTariffValue = importTariffValue;
         this.transportFee = transportFee;
-        this.logisticCost = logisticCost;
         this.noTaxPrice = noTaxPrice;
         this.finalPrice = finalPrice;
         this.profit = profit;

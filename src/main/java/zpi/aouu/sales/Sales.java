@@ -33,7 +33,7 @@ public class Sales {
                 calculateProfit(noTaxPrice, logisticCost, basePrice));
     }
 
-    public static ProductSaleData getProductSaleData(JsonObject productData, double preferredFinalPrice, double logisticCost) {
+    public static ProductSaleData getProductSaleData(JsonObject productData, double preferredFinalPrice) {
         int quantity;
         if(productData.get("quantity").toString().equals("\"\"")) {
             quantity = -1;
@@ -49,34 +49,9 @@ public class Sales {
                 quantity,
                 productData.get("tax").getAsDouble(),
                 preferredFinalPrice,
-                logisticCost
+                productData.get("logisticCost").getAsDouble()
         );
     }
-
-    /*public static ProductSaleAbroadData getProductSaleAbroadData(ProductBasic productData, CountryData countryData, double preferredFinalPrice, double logisticCost) {
-
-        int quantity;
-        if(productData.quantity.equals("\"\"")) {
-            quantity = -1;
-        } else {
-            quantity = Integer.parseInt(productData.quantity);
-        }
-        return new ProductSaleAbroadData(
-                productData.productName,
-                productData.productDescription,
-                countryData.name,
-                countryData.code,
-                productData.category,
-                productData.basePrice,
-                quantity,
-                countryData.importTariff,
-                calculateImportTariffValue(),
-                countryData.transportFee,
-                logisticCost,
-                calculateProductNoTaxPrice(productData)
-        );
-        return null;
-    }*/
 
     public static double calculateProfit(double noTaxPrice, double logisticCost, double basePrice) {
         return noTaxPrice - logisticCost - basePrice;

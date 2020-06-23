@@ -61,9 +61,8 @@ $(document).ready(function () {
         /* get the action attribute from the <form action=""> element */
         const url = "/price/" +
             $("#selectedProduct").text() + "/" +
-            $("#inputPreferredPrice").val() + "/" +
-            $("#inputLogisticCost").val(),
-            states = ($("#selectStates").val());
+            $("#inputPreferredPrice").val();
+        let states = ($("#selectStates").val());
 
         $.each(states, function (i, item) {
             states[i] = parseInt(item);
@@ -118,8 +117,7 @@ $(document).ready(function () {
         /* get the action attribute from the <form action=""> element */
         const url = "/priceabroad/" +
             $("#abroadSelectedProduct").text() + "/" +
-            $("#abroadInputPreferredPrice").val() + "/" +
-            $("#abroadInputLogisticCost").val(),
+            $("#abroadInputPreferredPrice").val();
             countries = ($("#selectCountries").val());
 
         $.each(countries, function (i, item) {
@@ -139,13 +137,12 @@ $(document).ready(function () {
                                         <td>${row.country}</td>
                                         <td>${row.currencyCode} ${formatter.format(row.basePrice)}</td>
                                         <td>${row.currencyCode} ${formatter.format(row.finalPrice)}</td>
-                                        <td>${row.currencyCode} ${formatter.format(row.logisticCost)}</td>
                                         <td>${row.currencyCode} ${formatter.format(row.transportFee)}</td>
                                         <td>${formatter.format(row.importTariff * 100)}%</td>
                                         <td>${row.currencyCode} ${formatter.format(row.importTariffValue)}</td>
                                         <td>${row.currencyCode} ${formatter.format(row.noTaxPrice)}</td>
                                         <td>${row.currencyCode} ${formatter.format(row.profit)}</td>
-                                   </tr>`;
+                                 </tr>`;
                 $('#abroadPriceTableBody').append(html_row);
                 $("#abroadPriceTable").css('visibility', 'visible');
             });
