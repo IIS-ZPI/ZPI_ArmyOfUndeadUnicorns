@@ -57,7 +57,7 @@ $(document).ready(function () {
 
 
     $("#prices-form-send").click(function () {
-        if($("#inputPreferredPrice").val() === "" || $("#selectCountries").val().length === 0) {
+        if($("#inputPreferredPrice").val() === "" || $("#selectStates").val().length === 0) {
             $("#errorMsgStates").css('visibility', 'visible');
         } else {
             $("#errorMsgStates").css('visibility', 'hidden');
